@@ -18,6 +18,53 @@ public class TravelBundle {
         this.numberofLessons = numberofLessons;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Accommodation getAccommodation() {
+        return accommodation;
+    }
+
+    public void setAccommodation(Accommodation accommodation) {
+        this.accommodation = accommodation;
+    }
+
+    public LiftPassType getLiftPass() {
+        return liftPass;
+    }
+
+    public void setLiftPass(LiftPassType liftPass) {
+        this.liftPass = liftPass;
+    }
+
+    public int getAccommodationNights() {
+        return accommodationNights;
+    }
+
+    public void setAccommodationNights(int accommodationNights) {
+        this.accommodationNights = accommodationNights;
+    }
+
+    public int getLiftPassDays() {
+        return liftPassDays;
+    }
+
+    public void setLiftPassDays(int liftPassDays) {
+        this.liftPassDays = liftPassDays;
+    }
+
+    public int getNumberofLessons() {
+        return numberofLessons;
+    }
+
+    public void setNumberofLessons(int numberofLessons) {
+        this.numberofLessons = numberofLessons;
+    }
 
     public double calculateBundlePrice() {
 
