@@ -115,10 +115,14 @@ public class TravelBundle {
 
     @Override
     public String toString() {
-        return "--------------------------------"
-        + "\nTravel Bundle Details:"
+        return "------------------------------------------------------------"
+        + "\n                   Travel Bundle Details                    "
+        + "\n------------------------------------------------------------"
         + "\n" + customer
         + "\n" + accommodation
+        + "\n------------------------------------------------------------"
+        + "\n                       Bundle Summary                       "
+        + "\n------------------------------------------------------------"
         + "\nLift Pass: " + liftPass
         + "\nLift Pass Days: " + liftPassDays
         + "\nNumber of Lessons: " + numberofLessons

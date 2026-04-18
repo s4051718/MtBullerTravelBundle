@@ -55,35 +55,44 @@ public class MtBullerResort {
     }
 
     public void displayAllAccommodations() {
-        System.out.println("\n--------------------------------");
-        System.out.println("All Accommodations");
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println("                     All Accommodations                     ");
+        System.out.println("------------------------------------------------------------");
 
         for (Accommodation room : accommodations) {
-            System.out.println(room);
+            String availability;
+            if (room.isAvailable()) {
+                availability = "Available";
+            } else {
+                availability = "Booked";
+            }
+            System.out.println("ID: " + room.getId() + " | Type: " + room.getType() + " | Price: $" + room.getPrice() + " | Status: " + availability);
         }
-        System.out.println("--------------------------------");
+        System.out.println("------------------------------------------------------------");
         pauseForUser();
     }
 
     public void displayAvailableAccommodations() {
-        System.out.println("\n--------------------------------");
-        System.out.println("Available Accommodations");
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println("                  Available Accommodations                  ");
+        System.out.println("------------------------------------------------------------");
 
         for (Accommodation room : accommodations) {
             if (room.isAvailable()) {
-                System.out.println(room);
+                System.out.println("ID: " + room.getId() + " | Type: " + room.getType() + " | Price: $" + room.getPrice());
             }
         }
-        System.out.println("--------------------------------");
+        System.out.println("------------------------------------------------------------");
         pauseForUser();
     }
 
     public void addCustomer() {
-        System.out.println("\n--------------------------------");
-        System.out.println("Create New Customer Account");
-        System.out.println("--------------------------------");
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println("                Create New Customer Account                 ");
+        System.out.println("------------------------------------------------------------");
 
-        System.out.println("Please enter an ID for the customer: ");
+
+        System.out.println("Please enter a new ID for the customer: ");
         int newId = scanner.nextInt();
         scanner.nextLine();
 
@@ -116,25 +125,30 @@ public class MtBullerResort {
         Customer customer = new Customer(newId, newName, skiLevel);
 
         customers.add(customer);
-        System.out.println("--------------------------------");
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println("                      Customer Details                      ");
+        System.out.println("------------------------------------------------------------");
+        System.out.println("ID: " + customer.getId() + " | Name: " + customer.getName() + " | Level: " + customer.getLevel());
+        System.out.println("------------------------------------------------------------");
         pauseForUser();
     }
 
     public void listCustomers() {
-        System.out.println("\n--------------------------------");
-        System.out.println("List of Customers");
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println("                     List of Customers                      ");
+        System.out.println("------------------------------------------------------------");
 
         for (Customer customer : customers) {
-            System.out.println(customer);
+            System.out.println("ID: " + customer.getId() + " | Name: " + customer.getName() + " | Level: " + customer.getLevel());
         }
-        System.out.println("--------------------------------");
+        System.out.println("------------------------------------------------------------");
         pauseForUser();
     }
 
     public void createTravelBundle() {
-        System.out.println("\n--------------------------------");
-        System.out.println("Create Travel Bundle");
-        System.out.println("--------------------------------");
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println("                    Create Travel Bundle                    ");
+        System.out.println("------------------------------------------------------------");
 
         // Customer ID
         Customer selectedCustomer = null;
@@ -195,25 +209,26 @@ public class MtBullerResort {
 
         // Display Bundle
         System.out.println("\n" + newBundle);
-        System.out.println("--------------------------------");
+        System.out.println("------------------------------------------------------------");
         pauseForUser();
     }
 
     public void listTravelBundles() {
-        System.out.println("\n--------------------------------");
-        System.out.println("List of Travel Bundles");
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println("                   List of Travel Bundles                   ");
+        System.out.println("------------------------------------------------------------");
 
         for (TravelBundle bundle : travelBundles) {
             System.out.println(bundle);
         }
-        System.out.println("--------------------------------");
+        System.out.println("------------------------------------------------------------");
         pauseForUser();
     }
 
     public void addLiftPassToBundle() {
-        System.out.println("\n--------------------------------");
-        System.out.println("Add Lift Pass To Bundle");
-        System.out.println("--------------------------------");
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println("                  Add Lift Pass To Bundle                   ");
+        System.out.println("------------------------------------------------------------");
 
         System.out.println("Please enter the customers ID number: ");
         int targetCustomerId = scanner.nextInt();
@@ -246,14 +261,14 @@ public class MtBullerResort {
 
         selectedTravelBundle.setLiftPass(passType);
         selectedTravelBundle.setLiftPassDays(passDays);
-        System.out.println("--------------------------------");
+        System.out.println("------------------------------------------------------------");
         pauseForUser();
     }
 
     public void addLessonToBundle() {
-        System.out.println("\n--------------------------------");
-        System.out.println("Add Lesson To Bundle");
-        System.out.println("--------------------------------");
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println("                    Add Lesson To Bundle                    ");
+        System.out.println("------------------------------------------------------------");
 
        System.out.println("Please enter the customers ID number: ");
         int targetCustomerId = scanner.nextInt();
@@ -275,21 +290,21 @@ public class MtBullerResort {
         scanner.nextLine();
 
         selectedTravelBundle.setNumberofLessons(selectedTravelBundle.getNumberofLessons() + lessons);
-        System.out.println("--------------------------------");
+        System.out.println("------------------------------------------------------------");
         pauseForUser();
     }
 
     public void writeBundleToFile() {
-        System.out.println("\n--------------------------------");
-        System.out.println("Write Bundle To File");
-        System.out.println("--------------------------------");
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println("                    Write Bundle To File                    ");
+        System.out.println("------------------------------------------------------------");
         pauseForUser();
     }
 
     public void readBundleFromFile() {
-        System.out.println("\n--------------------------------");
-        System.out.println("Read Bundle From File");
-        System.out.println("--------------------------------");
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println("                   Read Bundle From File                    ");
+        System.out.println("------------------------------------------------------------");
         pauseForUser();
     }
 

@@ -47,11 +47,11 @@ public abstract class Accommodation {
 
     @Override
     public String toString() {
-        return "--------------------------------"
-        + "\nAccommodation Details:"
-        + "\n--------------------------------"
+        return "------------------------------------------------------------"
+        + "\n                   Accommodation Details                    "
+        + "\n------------------------------------------------------------"
         + "\nAccommodation ID: " + id
-        + "\nAccommodation Type " + type
-        + "\nAccommodation Price: " + price + " per night";
+        + "\nAccommodation Type: " + type
+        + "\nAccommodation Price: $" + price + " per night";
     }
 }

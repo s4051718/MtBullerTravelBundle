@@ -37,9 +37,9 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "--------------------------------"
-        + "\nCustomer Details:"
-        + "\n--------------------------------"
+        return "------------------------------------------------------------"
+        + "\n                      Customer Details                      "
+        + "\n------------------------------------------------------------"
         + "\nCustomer ID: " + id
         + "\nCustomer Name: " + name
         + "\nCustomer Ski Level: " + level;
