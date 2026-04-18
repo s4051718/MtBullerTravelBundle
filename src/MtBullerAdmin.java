@@ -8,7 +8,7 @@ public class MtBullerAdmin {
 
         boolean exitAdmin = false;
 
-        System.out.println("Please Enter an Option:"
+        System.out.println("\nPlease Enter an Option:\n"
         + "\n1). Display all accommodations"
         + "\n2). Display available accommodations"
         + "\n3). Add customer"
@@ -19,7 +19,7 @@ public class MtBullerAdmin {
         + "\n8). Add lesson fees to bundle"
         + "\n9). Save bundles to file"
         + "\n10). Read bundles from file"
-        + "\n11). Quit"
+        + "\n11). Quit\n"
         );
 
         do {
