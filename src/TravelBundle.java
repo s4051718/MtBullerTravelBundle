@@ -118,7 +118,7 @@ public class TravelBundle {
         return "--------------------------------"
         + "\nTravel Bundle Details:"
         + "\n" + customer
-        + "\nAccommodation: " + accommodation
+        + "\n" + accommodation
         + "\nLift Pass: " + liftPass
         + "\nLift Pass Days: " + liftPassDays
         + "\nNumber of Lessons: " + numberofLessons
