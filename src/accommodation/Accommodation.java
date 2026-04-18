@@ -52,6 +52,6 @@ public abstract class Accommodation {
         + "\n--------------------------------"
         + "\nAccommodation ID: " + id
         + "\nAccommodation Type " + type
-        + "\nAccommodation Price: " + price;
+        + "\nAccommodation Price: " + price + " per night";
     }
 }
