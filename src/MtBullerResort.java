@@ -1,5 +1,9 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import accommodation.Accommodation;
 import accommodation.Apartment;
@@ -91,36 +95,66 @@ public class MtBullerResort {
         System.out.println("                Create New Customer Account                 ");
         System.out.println("------------------------------------------------------------");
 
+        boolean validId = true;
+        int newId = 0;
 
         System.out.println("Please enter a new ID for the customer: ");
-        int newId = scanner.nextInt();
-        scanner.nextLine();
+        do {
+            try {
+                newId = scanner.nextInt();
+                scanner.nextLine();
+                if (newId <= 0) {
+                    System.out.println("Invalid ID. Please enter a positive number.");
+                } else if (newId >= 1000) {
+                    System.out.println("Invalid ID. Please enter a number less than 1000.");
+                } else {
+                    validId = false;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine();
+            }
+        } while (validId);
 
         System.out.println("\nPlease enter the customers name: ");
         String newName = scanner.nextLine();
+
+        boolean validLevel = true;
+        int levelChoice = 0;
+        SkiingLevel skiLevel = null;
 
         System.out.println("\nPlease enter the customers skiing level: "
         + "\n1). Beginner"
         + "\n2). Intermediate"
         + "\n3). Expert"
         );
-        int levelChoice = scanner.nextInt();
-        scanner.nextLine();
-        SkiingLevel skiLevel = null;
-
-        switch (levelChoice) {
-            case 1:
-                skiLevel = SkiingLevel.BEGINNER;
-                break;
-            case 2:
-                skiLevel = SkiingLevel.INTERMEDIATE;
-                break;
-            case 3:
-                skiLevel = SkiingLevel.EXPERT;
-                break;
-            default:
-                break;
-        }
+        do {
+            try {
+                levelChoice = scanner.nextInt();
+                scanner.nextLine();
+                if (levelChoice < 1 || levelChoice > 3) {
+                    System.out.println("Invalid level. Please enter a number between 1 and 3.");
+                } else {
+                    validLevel = false;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine();
+            }
+            switch (levelChoice) {
+                case 1:
+                    skiLevel = SkiingLevel.BEGINNER;
+                    break;
+                case 2:
+                    skiLevel = SkiingLevel.INTERMEDIATE;
+                    break;
+                case 3:
+                    skiLevel = SkiingLevel.EXPERT;
+                    break;
+                default:
+                    break;
+            }
+        } while (validLevel);
 
         Customer customer = new Customer(newId, newName, skiLevel);
 
@@ -154,89 +188,145 @@ public class MtBullerResort {
         Customer selectedCustomer = null;
 
         while (selectedCustomer == null) {
-            System.out.println("\nIs the customer:"
-            + "\n1). New "
-            + "\n2). Current");
-            int customerType = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                System.out.println("Is the customer:"
+                + "\n1). New "
+                + "\n2). Current");
+                int customerType = scanner.nextInt();
+                scanner.nextLine();
 
-            switch (customerType) {
-                case 1:
-                    selectedCustomer = addCustomer();
-                    break;
-                case 2:
-                    System.out.println("\nFind by:"
-                    + "\n1). Customer ID"
-                    + "\n2). Customer Name");
-                    int selection = scanner.nextInt();
-                    scanner.nextLine();
-                    switch (selection) {
-                        case 1:
-                            System.out.println("\nPlease enter the customers ID number: ");
-                            int targetId = scanner.nextInt();
-                            scanner.nextLine();
+                switch (customerType) {
+                    case 1:
+                        selectedCustomer = addCustomer();
+                        break;
+                    case 2:
+                        System.out.println("\nFind by:"
+                        + "\n1). Customer ID"
+                        + "\n2). Customer Name");
+                        int selection = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (selection) {
+                            case 1:
+                                System.out.println("\nPlease enter the customers ID number: ");
+                                int targetId = scanner.nextInt();
+                                scanner.nextLine();
                                 for (Customer customer : customers) {
                                     if (customer.getId() == targetId) {
                                         selectedCustomer = customer;
                                         System.out.println("\nCustomer found: " + customer.getName());
                                     }
                                 }
-                            break;
-                        case 2:
-                            System.out.println("\nPlease enter the customers name: ");
-                            String targetName = scanner.nextLine().trim();
-                            selectedCustomer = findCustomerByName(targetName);
-                            break;
-                        default:
-                            System.out.println("Invalid selection. Please enter '1' or '2'.");
-                            break;
-                    }
-                    if (selectedCustomer == null) {
-                        System.out.println("Customer not found. Please try again or create a new account.");
-                    }
-                    break;
-                default:
-                    System.out.println("Invalid selection. Please enter '1' or '2'.");
-                    break;
+                                break;
+                            case 2:
+                                System.out.println("\nPlease enter the customers name: ");
+                                String targetName = scanner.nextLine().trim();
+                                selectedCustomer = findCustomerByName(targetName);
+                                break;
+                            default:
+                                System.out.println("Invalid selection. Please enter '1' or '2'.");
+                                break;
+                        }
+                        if (selectedCustomer == null) {
+                            throw new MtBullerException("Customer not found. Please try again or create a new account.");
+                        }
+                        break;
+                    default:
+                        System.out.println("Invalid selection. Please enter '1' or '2'.");
+                        break;
+                }
+            } catch (MtBullerException e) {
+                System.out.println("\nError: " + e.getMessage());
+            } catch (InputMismatchException e) {
+                System.out.println("\nInvalid input. Please enter a number.");
+                scanner.nextLine();
             }
         }
 
         // Accommodation Selection
         Accommodation selectedAccommodation = null;
+        int accommodationNights = 0;
 
-        System.out.println("------------------------------------------------------------");
-        System.out.println("                 Available Accommodations                  ");
-        System.out.println("------------------------------------------------------------");
-        for (Accommodation room : accommodations) {
-            if (room.isAvailable()) {
-                System.out.println("ID: " + room.getId() + " | Type: " + room.getType() + " | Price: $" + room.getPrice());
+        while (selectedAccommodation == null) {
+            System.out.println("\n------------------------------------------------------------");
+            System.out.println("                 Available Accommodations                  ");
+            System.out.println("------------------------------------------------------------");
+            for (Accommodation room : accommodations) {
+                if (room.isAvailable()) {
+                    System.out.println("ID: " + room.getId() + " | Type: " + room.getType() + " | Price: $" + room.getPrice());
+                }
+            }
+            System.out.println("------------------------------------------------------------");
+
+            System.out.println("\nPlease enter an Accommodation ID from the list above: ");
+            String targetAccommodationId = scanner.nextLine();
+
+            for (Accommodation currentAccommodation : accommodations) {
+                if (currentAccommodation.getId().equals(targetAccommodationId)) {
+                    selectedAccommodation = currentAccommodation;
+                }
+            }
+            if (selectedAccommodation == null) {
+                System.out.println("\nAccommodation ID not found. Please choose from the list.");
             }
         }
-        System.out.println("------------------------------------------------------------");
 
-        System.out.println("\nPlease enter an Accommodation ID from the list above: ");
-        String targetAccommodationId = scanner.nextLine();
+        LocalDate startDate = null;
 
-        for (Accommodation currentAccommodation : accommodations) {
-            if (currentAccommodation.getId().equals(targetAccommodationId)) {
-                selectedAccommodation = currentAccommodation;
+        while (startDate == null) {
+            try {
+                System.out.println("\nWhat date begins the stay (dd/MM/yyyy)?");
+                String dateString = scanner.nextLine().trim();
+
+                if (dateString.isEmpty()) {
+                    continue;
+                }
+
+                startDate = parseIssueDate(dateString);
+
+                if (startDate.isBefore(LocalDate.now())) {
+                    startDate = null; // Reset to keep looping
+                    throw new MtBullerException("Booking date cannot be in the past.");
+                }
+
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Please use dd/MM/yyyy (e.g., 25/12/2026).");
+            } catch (MtBullerException e) {
+                System.out.println("Error: " + e.getMessage());
             }
         }
 
-        System.out.println("\nHow many nights accommodation?: ");
-        int accommodationNights = scanner.nextInt();
-        scanner.nextLine();
+        int passDays = 0;
+        int lessons = 0;
 
-        // Lift Pass
-        System.out.println("\nHow many days lift access?: ");
-        int passDays = scanner.nextInt();
-        scanner.nextLine();
+        while (true) {
+            try {
+                System.out.println("\nHow many nights accommodation?: ");
+                accommodationNights = scanner.nextInt();
+                scanner.nextLine();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("\nInvalid input. Please enter numbers.");
+                scanner.nextLine();
+            }
+        }
 
         LiftPassType passType = null;
 
+        while (true) {
+            try {
+                System.out.println("\nHow many days lift access?: ");
+                passDays = scanner.nextInt();
+                scanner.nextLine();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("\nInvalid input. Please enter numbers.");
+                scanner.nextLine();
+            }
+        }
+
         if (passDays == 0) {
             passType = LiftPassType.NONE;
-        } else if (passDays >= 365) {
+        } else if (passDays >= 30) {
             passType = LiftPassType.SEASON;
         } else if (passDays >= 5) {
             passType = LiftPassType.FIVE_DAYS;
@@ -244,13 +334,20 @@ public class MtBullerResort {
             passType = LiftPassType.SINGLE_DAY;
         }
 
-        // Lessons
-        System.out.println("\nHow many ski lessons? ");
-        int lessons = scanner.nextInt();
-        scanner.nextLine();
+        while (true) {
+            try {
+                System.out.println("\nHow many ski lessons? ");
+                lessons = scanner.nextInt();
+                scanner.nextLine();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("\nInvalid input. Please enter numbers.");
+                scanner.nextLine();
+            }
+        }
 
         // Bundle Creation
-        TravelBundle newBundle = new TravelBundle(selectedCustomer, selectedAccommodation, passType, accommodationNights, passDays, lessons);
+        TravelBundle newBundle = new TravelBundle(selectedCustomer, selectedAccommodation, passType, startDate, accommodationNights, passDays, lessons);
 
         travelBundles.add(newBundle);
         selectedAccommodation.setAvailable(false);
@@ -300,7 +397,7 @@ public class MtBullerResort {
 
             if (passDays == 0) {
                 passType = LiftPassType.NONE;
-            } else if (passDays >= 365) {
+            } else if (passDays >= 30) {
                 passType = LiftPassType.SEASON;
             } else if (passDays >= 5) {
                 passType = LiftPassType.FIVE_DAYS;
@@ -319,7 +416,7 @@ public class MtBullerResort {
 
     public void addLessonToBundle() {
         System.out.println("\n------------------------------------------------------------");
-        System.out.println("                    Add Lesson To Bundle                    ");
+        System.out.println("                    Add Lessons To Bundle                    ");
         System.out.println("------------------------------------------------------------");
 
        System.out.println("Please enter the customers ID number: ");
@@ -375,4 +472,9 @@ public class MtBullerResort {
         }
         return null;
     }
+
+    public LocalDate parseIssueDate(String input) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            return LocalDate.parse(input, formatter);
+        }
 }
