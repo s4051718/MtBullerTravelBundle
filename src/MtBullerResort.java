@@ -26,14 +26,7 @@ public class MtBullerResort {
 
     public MtBullerResort() {
 
-        // Populate the customers ArrayList
-        Customer c1 = new Customer(1, "Alice", SkiingLevel.BEGINNER);
-        Customer c2 = new Customer(2, "Bob", SkiingLevel.INTERMEDIATE);
-        Customer c3 = new Customer(3, "Charlie", SkiingLevel.EXPERT);
-
-        customers.add(c1);
-        customers.add(c2);
-        customers.add(c3);
+        loadCustomersFromFile();
 
         // Populate the accommodations ArrayList
         LodgeRoom l1LodgeRoom = new LodgeRoom("L1", 150);
@@ -152,6 +145,7 @@ public class MtBullerResort {
         System.out.println("------------------------------------------------------------");
         System.out.println("ID: " + customer.getId() + " | Name: " + customer.getName() + " | Level: " + customer.getLevel());
         System.out.println("------------------------------------------------------------");
+        writeCustomersToFile();
         return customer;
     }
 
@@ -495,6 +489,43 @@ public class MtBullerResort {
     }
 
     // Helper Methods
+    public void loadCustomersFromFile() {
+        Path path = Path.of("customers.ser");
+
+        if (Files.exists(path)) {
+            try (ObjectInputStream objectStream = new ObjectInputStream(Files.newInputStream(path))) {
+                customers = (ArrayList<Customer>) objectStream.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Error loading customers: " + e.getMessage());
+            }
+        } else {
+            Customer c1 = new Customer(1, "Alice", SkiingLevel.BEGINNER);
+            Customer c2 = new Customer(2, "Bob", SkiingLevel.INTERMEDIATE);
+            Customer c3 = new Customer(3, "Charlie", SkiingLevel.EXPERT);
+
+            customers.add(c1);
+            customers.add(c2);
+            customers.add(c3);
+
+            writeCustomersToFile();
+        }
+    }
+
+    public void writeCustomersToFile() {
+
+        Path path = Path.of("customers.ser");
+
+        try (OutputStream out = Files.newOutputStream(path);
+            ObjectOutputStream objectStream = new ObjectOutputStream(out)) {
+                objectStream.writeObject(customers);
+                objectStream.flush();
+                System.out.println("Save successful!");
+
+        } catch (IOException e) {
+            System.out.println("Error saving customers: " + e.getMessage());
+        }
+    }
+
     public void pauseForUser() {
         System.out.println("\nPress Enter to return to the main menu...");
         scanner.nextLine();
