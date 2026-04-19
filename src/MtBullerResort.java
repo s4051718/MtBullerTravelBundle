@@ -291,24 +291,28 @@ public class MtBullerResort {
             }
         }
 
-        System.out.println("\nHow many days lift access?: ");
-        int passDays = scanner.nextInt();
-        scanner.nextLine();
+        if (selectedTravelBundle != null) {
+            System.out.println("\nHow many days lift access?: ");
+            int passDays = scanner.nextInt();
+            scanner.nextLine();
 
-        LiftPassType passType = null;
+            LiftPassType passType = null;
 
-        if (passDays == 0) {
-            passType = LiftPassType.NONE;
-        } else if (passDays >= 365) {
-            passType = LiftPassType.SEASON;
-        } else if (passDays >= 5) {
-            passType = LiftPassType.FIVE_DAYS;
+            if (passDays == 0) {
+                passType = LiftPassType.NONE;
+            } else if (passDays >= 365) {
+                passType = LiftPassType.SEASON;
+            } else if (passDays >= 5) {
+                passType = LiftPassType.FIVE_DAYS;
+            } else {
+                passType = LiftPassType.SINGLE_DAY;
+            }
+
+            selectedTravelBundle.setLiftPass(passType);
+            selectedTravelBundle.setLiftPassDays(passDays);
         } else {
-            passType = LiftPassType.SINGLE_DAY;
+            System.out.println("Bundle not found for Customer ID: " + targetCustomerId);
         }
-
-        selectedTravelBundle.setLiftPass(passType);
-        selectedTravelBundle.setLiftPassDays(passDays);
         System.out.println("------------------------------------------------------------");
         pauseForUser();
     }
@@ -331,13 +335,14 @@ public class MtBullerResort {
             }
         }
 
-        int lessons;
-
-        System.out.println("How many lessons? ");
-        lessons = scanner.nextInt();
-        scanner.nextLine();
-
-        selectedTravelBundle.setNumberofLessons(selectedTravelBundle.getNumberofLessons() + lessons);
+        if (selectedTravelBundle != null) {
+            System.out.println("How many lessons? ");
+            int lessons = scanner.nextInt();
+            scanner.nextLine();
+            selectedTravelBundle.setNumberofLessons(selectedTravelBundle.getNumberofLessons() + lessons);
+        } else {
+            System.out.println("Bundle not found for Customer ID: " + targetCustomerId);
+        }
         System.out.println("------------------------------------------------------------");
         pauseForUser();
     }
