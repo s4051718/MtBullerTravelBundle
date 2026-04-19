@@ -86,7 +86,7 @@ public class MtBullerResort {
         pauseForUser();
     }
 
-    public void addCustomer() {
+    public Customer addCustomer() {
         System.out.println("\n------------------------------------------------------------");
         System.out.println("                Create New Customer Account                 ");
         System.out.println("------------------------------------------------------------");
@@ -130,7 +130,7 @@ public class MtBullerResort {
         System.out.println("------------------------------------------------------------");
         System.out.println("ID: " + customer.getId() + " | Name: " + customer.getName() + " | Level: " + customer.getLevel());
         System.out.println("------------------------------------------------------------");
-        pauseForUser();
+        return customer;
     }
 
     public void listCustomers() {
@@ -150,23 +150,71 @@ public class MtBullerResort {
         System.out.println("                    Create Travel Bundle                    ");
         System.out.println("------------------------------------------------------------");
 
-        // Customer ID
+        // Customer Selection
         Customer selectedCustomer = null;
 
-        System.out.println("Please enter the customers ID number: ");
-        int targetCustomerId = scanner.nextInt();
-        scanner.nextLine();
+        while (selectedCustomer == null) {
+            System.out.println("\nIs the customer:"
+            + "\n1). New "
+            + "\n2). Current");
+            int customerType = scanner.nextInt();
+            scanner.nextLine();
 
-        for (Customer currentCustomer : customers) {
-            if (currentCustomer.getId() == targetCustomerId) {
-                selectedCustomer = currentCustomer;
+            switch (customerType) {
+                case 1:
+                    selectedCustomer = addCustomer();
+                    break;
+                case 2:
+                    System.out.println("\nFind by:"
+                    + "\n1). Customer ID"
+                    + "\n2). Customer Name");
+                    int selection = scanner.nextInt();
+                    scanner.nextLine();
+                    switch (selection) {
+                        case 1:
+                            System.out.println("\nPlease enter the customers ID number: ");
+                            int targetId = scanner.nextInt();
+                            scanner.nextLine();
+                                for (Customer customer : customers) {
+                                    if (customer.getId() == targetId) {
+                                        selectedCustomer = customer;
+                                        System.out.println("\nCustomer found: " + customer.getName());
+                                    }
+                                }
+                            break;
+                        case 2:
+                            System.out.println("\nPlease enter the customers name: ");
+                            String targetName = scanner.nextLine().trim();
+                            selectedCustomer = findCustomerByName(targetName);
+                            break;
+                        default:
+                            System.out.println("Invalid selection. Please enter '1' or '2'.");
+                            break;
+                    }
+                    if (selectedCustomer == null) {
+                        System.out.println("Customer not found. Please try again or create a new account.");
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid selection. Please enter '1' or '2'.");
+                    break;
             }
         }
 
-        // Accommodation ID
+        // Accommodation Selection
         Accommodation selectedAccommodation = null;
 
-        System.out.println("\nPlease enter the Accommodation ID: ");
+        System.out.println("------------------------------------------------------------");
+        System.out.println("                 Available Accommodations                  ");
+        System.out.println("------------------------------------------------------------");
+        for (Accommodation room : accommodations) {
+            if (room.isAvailable()) {
+                System.out.println("ID: " + room.getId() + " | Type: " + room.getType() + " | Price: $" + room.getPrice());
+            }
+        }
+        System.out.println("------------------------------------------------------------");
+
+        System.out.println("\nPlease enter an Accommodation ID from the list above: ");
         String targetAccommodationId = scanner.nextLine();
 
         for (Accommodation currentAccommodation : accommodations) {
@@ -197,7 +245,7 @@ public class MtBullerResort {
         }
 
         // Lessons
-        System.out.println("\nHow many lessons? "); //fix wording
+        System.out.println("\nHow many ski lessons? ");
         int lessons = scanner.nextInt();
         scanner.nextLine();
 
@@ -308,8 +356,18 @@ public class MtBullerResort {
         pauseForUser();
     }
 
-    private void pauseForUser() {
+    // Helper Methods
+    public void pauseForUser() {
         System.out.println("\nPress Enter to return to the main menu...");
         scanner.nextLine();
+    }
+
+    private Customer findCustomerByName(String name) {
+        for (Customer customer : customers) {
+            if (customer.getName().equalsIgnoreCase(name)) {
+                return customer;
+            }
+        }
+        return null;
     }
 }

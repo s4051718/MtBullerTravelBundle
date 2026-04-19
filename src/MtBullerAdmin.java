@@ -35,6 +35,7 @@ public class MtBullerAdmin {
                 break;
             case 3:
                 resort.addCustomer();
+                resort.pauseForUser();
                 break;
             case 4:
                 resort.listCustomers();
