@@ -3,3 +3,4 @@ bin/
 .vscode/
 BugList.md
 ToDo.md
+*.ser
