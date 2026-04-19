@@ -1,6 +1,6 @@
 package accommodation;
 
-public abstract class Accommodation {
+public abstract class Accommodation implements Pricable {
 
     String id;
     String type;
@@ -47,7 +47,8 @@ public abstract class Accommodation {
 
     @Override
     public String toString() {
-        return "------------------------------------------------------------"
+        return
+        "------------------------------------------------------------"
         + "\n                   Accommodation Details                    "
         + "\n------------------------------------------------------------"
         + "\nAccommodation ID: " + id
