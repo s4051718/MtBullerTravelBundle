@@ -139,7 +139,8 @@ public class TravelBundle implements Pricable, Serializable {
             formattedDate = "Not Set";
         }
 
-        return "------------------------------------------------------------"
+        return
+        "\n------------------------------------------------------------"
         + "\n                   Travel Bundle Details                    "
         + "\n------------------------------------------------------------"
         + "\n" + customer

@@ -39,7 +39,8 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "------------------------------------------------------------"
+        return
+        "------------------------------------------------------------"
         + "\n                      Customer Details                      "
         + "\n------------------------------------------------------------"
         + "\nCustomer ID: " + id
