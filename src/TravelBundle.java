@@ -1,10 +1,11 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.io.Serializable;
 
 import accommodation.Accommodation;
 import accommodation.Pricable;
 
-public class TravelBundle implements Pricable {
+public class TravelBundle implements Pricable, Serializable {
 
     private Customer customer;
     private Accommodation accommodation;

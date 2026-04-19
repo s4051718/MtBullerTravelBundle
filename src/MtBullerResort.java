@@ -4,6 +4,12 @@ import java.util.InputMismatchException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.nio.file.Path;
+import java.nio.file.Files;
+import java.io.OutputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 
 import accommodation.Accommodation;
 import accommodation.Apartment;
@@ -30,18 +36,18 @@ public class MtBullerResort {
         customers.add(c3);
 
         // Populate the accommodations ArrayList
-        LodgeRoom l1LodgeRoom = new LodgeRoom("l1", 150);
-        LodgeRoom l2LodgeRoom = new LodgeRoom("l2", 150);
-        LodgeRoom l3LodgeRoom = new LodgeRoom("l3", 150);
-        LodgeRoom l4LodgeRoom = new LodgeRoom("l4", 150);
-        Apartment a1Apartment = new Apartment("a1", 120);
-        Apartment a2Apartment = new Apartment("a2", 120);
-        Apartment a3Apartment = new Apartment("a3", 120);
-        Apartment a4Apartment = new Apartment("a4", 120);
-        HotelRoom h1HotelRoom = new HotelRoom("h1", 100);
-        HotelRoom h2HotelRoom = new HotelRoom("h2", 100);
-        HotelRoom h3HotelRoom = new HotelRoom("h3", 100);
-        HotelRoom h4HotelRoom = new HotelRoom("h4", 100);
+        LodgeRoom l1LodgeRoom = new LodgeRoom("L1", 150);
+        LodgeRoom l2LodgeRoom = new LodgeRoom("L2", 150);
+        LodgeRoom l3LodgeRoom = new LodgeRoom("L3", 150);
+        LodgeRoom l4LodgeRoom = new LodgeRoom("L4", 150);
+        Apartment a1Apartment = new Apartment("A1", 120);
+        Apartment a2Apartment = new Apartment("A2", 120);
+        Apartment a3Apartment = new Apartment("A3", 120);
+        Apartment a4Apartment = new Apartment("A4", 120);
+        HotelRoom h1HotelRoom = new HotelRoom("H1", 100);
+        HotelRoom h2HotelRoom = new HotelRoom("H2", 100);
+        HotelRoom h3HotelRoom = new HotelRoom("H3", 100);
+        HotelRoom h4HotelRoom = new HotelRoom("H4", 100);
 
 
         accommodations.add(l1LodgeRoom);
@@ -95,26 +101,8 @@ public class MtBullerResort {
         System.out.println("                Create New Customer Account                 ");
         System.out.println("------------------------------------------------------------");
 
-        boolean validId = true;
-        int newId = 0;
-
-        System.out.println("Please enter a new ID for the customer: ");
-        do {
-            try {
-                newId = scanner.nextInt();
-                scanner.nextLine();
-                if (newId <= 0) {
-                    System.out.println("Invalid ID. Please enter a positive number.");
-                } else if (newId >= 1000) {
-                    System.out.println("Invalid ID. Please enter a number less than 1000.");
-                } else {
-                    validId = false;
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a number.");
-                scanner.nextLine();
-            }
-        } while (validId);
+        int newId = generateNextCustomerId();
+        System.out.println("Customer ID generated: " + newId);
 
         System.out.println("\nPlease enter the customers name: ");
         String newName = scanner.nextLine();
@@ -303,26 +291,30 @@ public class MtBullerResort {
                 System.out.println("\nHow many nights accommodation?: ");
                 accommodationNights = scanner.nextInt();
                 scanner.nextLine();
+
+                System.out.println("\nHow many days lift access?: ");
+                passDays = scanner.nextInt();
+                scanner.nextLine();
+                if (passDays > accommodationNights) {
+                    throw new MtBullerException("Lift pass days (" + passDays + ") cannot exceed stay duration (" + accommodationNights + " nights).");
+                }
+
+                System.out.println("\nHow many ski lessons? ");
+                lessons = scanner.nextInt();
+                scanner.nextLine();
+                if (lessons > accommodationNights) {
+                    throw new MtBullerException("Number of lessons (" + lessons + ") cannot exceed stay duration (" + accommodationNights + " nights).");
+                }
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("\nInvalid input. Please enter numbers.");
                 scanner.nextLine();
+            } catch (MtBullerException e) {
+                System.out.println("\nError: " + e.getMessage());
             }
         }
 
         LiftPassType passType = null;
-
-        while (true) {
-            try {
-                System.out.println("\nHow many days lift access?: ");
-                passDays = scanner.nextInt();
-                scanner.nextLine();
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("\nInvalid input. Please enter numbers.");
-                scanner.nextLine();
-            }
-        }
 
         if (passDays == 0) {
             passType = LiftPassType.NONE;
@@ -332,18 +324,6 @@ public class MtBullerResort {
             passType = LiftPassType.FIVE_DAYS;
         } else {
             passType = LiftPassType.SINGLE_DAY;
-        }
-
-        while (true) {
-            try {
-                System.out.println("\nHow many ski lessons? ");
-                lessons = scanner.nextInt();
-                scanner.nextLine();
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("\nInvalid input. Please enter numbers.");
-                scanner.nextLine();
-            }
         }
 
         // Bundle Creation
@@ -375,40 +355,54 @@ public class MtBullerResort {
         System.out.println("                  Add Lift Pass To Bundle                   ");
         System.out.println("------------------------------------------------------------");
 
-        System.out.println("Please enter the customers ID number: ");
-        int targetCustomerId = scanner.nextInt();
-        scanner.nextLine();
-
-        TravelBundle selectedTravelBundle = null;
-
-        for (TravelBundle bundle : travelBundles) {
-            if (bundle.getCustomer().getId() == targetCustomerId) {
-                selectedTravelBundle = bundle;
-                break;
-            }
-        }
-
-        if (selectedTravelBundle != null) {
-            System.out.println("\nHow many days lift access?: ");
-            int passDays = scanner.nextInt();
+        try {
+            System.out.println("Please enter the customers ID number: ");
+            int targetCustomerId = scanner.nextInt();
             scanner.nextLine();
 
-            LiftPassType passType = null;
+            TravelBundle selectedTravelBundle = null;
 
-            if (passDays == 0) {
-                passType = LiftPassType.NONE;
-            } else if (passDays >= 30) {
-                passType = LiftPassType.SEASON;
-            } else if (passDays >= 5) {
-                passType = LiftPassType.FIVE_DAYS;
-            } else {
-                passType = LiftPassType.SINGLE_DAY;
+            for (TravelBundle bundle : travelBundles) {
+                if (bundle.getCustomer().getId() == targetCustomerId) {
+                    selectedTravelBundle = bundle;
+                    break;
+                }
             }
 
-            selectedTravelBundle.setLiftPass(passType);
-            selectedTravelBundle.setLiftPassDays(passDays);
-        } else {
-            System.out.println("Bundle not found for Customer ID: " + targetCustomerId);
+            if (selectedTravelBundle != null) {
+                System.out.println("\nHow many days lift access?: ");
+                int passDays = scanner.nextInt();
+                scanner.nextLine();
+
+                if (passDays > selectedTravelBundle.getAccommodationNights()) {
+                    throw new MtBullerException("Lift pass days (" + passDays + ") cannot exceed stay duration (" + selectedTravelBundle.getAccommodationNights() + " nights).");
+                }
+
+                LiftPassType passType = null;
+
+                if (passDays == 0) {
+                    passType = LiftPassType.NONE;
+                } else if (passDays >= 30) {
+                    passType = LiftPassType.SEASON;
+                } else if (passDays >= 5) {
+                    passType = LiftPassType.FIVE_DAYS;
+                } else {
+                    passType = LiftPassType.SINGLE_DAY;
+                }
+
+                selectedTravelBundle.setLiftPass(passType);
+                selectedTravelBundle.setLiftPassDays(passDays);
+
+                System.out.println("\nUpdate Successful!");
+                System.out.println(selectedTravelBundle);
+            } else {
+                System.out.println("Bundle not found for Customer ID: " + targetCustomerId);
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("\nInvalid input. Please enter numbers.");
+            scanner.nextLine();
+        } catch (MtBullerException e) {
+            System.out.println("\nError: " + e.getMessage());
         }
         System.out.println("------------------------------------------------------------");
         pauseForUser();
@@ -419,26 +413,41 @@ public class MtBullerResort {
         System.out.println("                    Add Lessons To Bundle                    ");
         System.out.println("------------------------------------------------------------");
 
-       System.out.println("Please enter the customers ID number: ");
-        int targetCustomerId = scanner.nextInt();
-        scanner.nextLine();
-
-        TravelBundle selectedTravelBundle = null;
-
-        for (TravelBundle bundle : travelBundles) {
-            if (bundle.getCustomer().getId() == targetCustomerId) {
-                selectedTravelBundle = bundle;
-                break;
-            }
-        }
-
-        if (selectedTravelBundle != null) {
-            System.out.println("How many lessons? ");
-            int lessons = scanner.nextInt();
+        try {
+            System.out.println("Please enter the customers ID number: ");
+            int targetCustomerId = scanner.nextInt();
             scanner.nextLine();
-            selectedTravelBundle.setNumberofLessons(selectedTravelBundle.getNumberofLessons() + lessons);
-        } else {
-            System.out.println("Bundle not found for Customer ID: " + targetCustomerId);
+
+            TravelBundle selectedTravelBundle = null;
+
+            for (TravelBundle bundle : travelBundles) {
+                if (bundle.getCustomer().getId() == targetCustomerId) {
+                    selectedTravelBundle = bundle;
+                    break;
+                }
+            }
+
+            if (selectedTravelBundle != null) {
+                System.out.println("How many lessons? ");
+                int lessons = scanner.nextInt();
+                scanner.nextLine();
+
+                if (selectedTravelBundle.getNumberofLessons() + lessons > selectedTravelBundle.getAccommodationNights()) {
+                    throw new MtBullerException("Total lessons (" + (selectedTravelBundle.getNumberofLessons() + lessons) + ") cannot exceed stay duration (" + selectedTravelBundle.getAccommodationNights() + " nights).");
+                }
+
+                selectedTravelBundle.setNumberofLessons(selectedTravelBundle.getNumberofLessons() + lessons);
+
+                System.out.println("\nUpdate Successful!");
+                System.out.println(selectedTravelBundle);
+            } else {
+                System.out.println("Bundle not found for Customer ID: " + targetCustomerId);
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("\nInvalid input. Please enter numbers.");
+            scanner.nextLine();
+        } catch (MtBullerException e) {
+            System.out.println("\nError: " + e.getMessage());
         }
         System.out.println("------------------------------------------------------------");
         pauseForUser();
@@ -448,6 +457,20 @@ public class MtBullerResort {
         System.out.println("\n------------------------------------------------------------");
         System.out.println("                    Write Bundle To File                    ");
         System.out.println("------------------------------------------------------------");
+
+        System.out.println("\nSaving bundles to database...");
+
+            Path path = Path.of("bundles.ser");
+
+            try (OutputStream out = Files.newOutputStream(path);
+                ObjectOutputStream objectStream = new ObjectOutputStream(out)) {
+                    objectStream.writeObject(travelBundles);
+                    objectStream.flush();
+                    System.out.println("Save successful!");
+
+            } catch (IOException e) {
+                System.out.println("Error saving bundles: " + e.getMessage());
+            }
         pauseForUser();
     }
 
@@ -455,6 +478,19 @@ public class MtBullerResort {
         System.out.println("\n------------------------------------------------------------");
         System.out.println("                   Read Bundle From File                    ");
         System.out.println("------------------------------------------------------------");
+
+        System.out.println("\nReading bundles from database...");
+
+            Path path = Path.of("bundles.ser");
+
+            try (ObjectInputStream objectStream = new ObjectInputStream(Files.newInputStream(path))) {
+                travelBundles = (ArrayList<TravelBundle>) objectStream.readObject();
+                System.out.println("Read successful!");
+
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Error reading bundles: " + e.getMessage());
+            }
+            System.out.println(travelBundles);
         pauseForUser();
     }
 
@@ -462,6 +498,16 @@ public class MtBullerResort {
     public void pauseForUser() {
         System.out.println("\nPress Enter to return to the main menu...");
         scanner.nextLine();
+    }
+
+    private int generateNextCustomerId() {
+        int maxId = 0;
+        for (Customer customer : customers) {
+            if (customer.getId() > maxId) {
+                maxId = customer.getId();
+            }
+        }
+        return maxId + 1;
     }
 
     private Customer findCustomerByName(String name) {

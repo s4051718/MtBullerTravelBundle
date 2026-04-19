@@ -1,6 +1,8 @@
 package accommodation;
 
-public abstract class Accommodation implements Pricable {
+import java.io.Serializable;
+
+public abstract class Accommodation implements Pricable, Serializable {
 
     String id;
     String type;
