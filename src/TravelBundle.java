@@ -1,18 +1,24 @@
-import accommodation.Accommodation;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-public class TravelBundle {
+import accommodation.Accommodation;
+import accommodation.Pricable;
+
+public class TravelBundle implements Pricable {
 
     private Customer customer;
     private Accommodation accommodation;
     private LiftPassType liftPass;
+    private LocalDate startDate;
     private int accommodationNights;
     private int liftPassDays;
     private int numberofLessons;
 
-    public TravelBundle(Customer customer, Accommodation accommodation, LiftPassType liftPass, int accommodationNights, int liftPassDays, int numberofLessons) {
+    public TravelBundle(Customer customer, Accommodation accommodation, LiftPassType liftPass, LocalDate startDate, int accommodationNights, int liftPassDays, int numberofLessons) {
         this.customer = customer;
         this.accommodation = accommodation;
         this.liftPass = liftPass;
+        this.startDate = startDate;
         this.accommodationNights = accommodationNights;
         this.liftPassDays = liftPassDays;
         this.numberofLessons = numberofLessons;
@@ -42,6 +48,14 @@ public class TravelBundle {
         this.liftPass = liftPass;
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
     public int getAccommodationNights() {
         return accommodationNights;
     }
@@ -66,7 +80,7 @@ public class TravelBundle {
         this.numberofLessons = numberofLessons;
     }
 
-    public double calculateBundlePrice() {
+    public double getPrice() {
 
         // Accommodation
         double accommodationCost = accommodation.getPrice() * accommodationNights;
@@ -115,17 +129,28 @@ public class TravelBundle {
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedDate;
+
+        if (startDate != null) {
+            formattedDate = startDate.format(formatter);
+        } else {
+            formattedDate = "Not Set";
+        }
+
         return "------------------------------------------------------------"
         + "\n                   Travel Bundle Details                    "
         + "\n------------------------------------------------------------"
         + "\n" + customer
-        + "\n" + accommodation
         + "\n------------------------------------------------------------"
         + "\n                       Bundle Summary                       "
         + "\n------------------------------------------------------------"
-        + "\nLift Pass: " + liftPass
-        + "\nLift Pass Days: " + liftPassDays
-        + "\nNumber of Lessons: " + numberofLessons
-        + "\nTotal Bundle Price: $" + calculateBundlePrice();
+        + "\nStart Date:        " + formattedDate
+        + "\nAccommodation:     " + accommodation.getType() + " (ID: " + accommodation.getId() + ")"
+        + "\nDuration:          " + accommodationNights + " nights"
+        + "\nLift Pass:         " + liftPass + " (" + liftPassDays + " days)"
+        + "\nSki Lessons:       " + numberofLessons
+        + "\n------------------------------------------------------------"
+        + "\nTotal Bundle Price: $" + getPrice();
     }
 }
