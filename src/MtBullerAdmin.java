@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MtBullerAdmin {
@@ -12,7 +13,13 @@ public class MtBullerAdmin {
     }
 
     public static void menu() {
-        System.out.println("\nPlease Enter an Option:\n"
+        int optionEntered = 0;
+
+        System.out.println("\n------------------------------------------------------------");
+        System.out.println("                   Mt Buller Resort Admin                   ");
+        System.out.println("------------------------------------------------------------");
+        System.out.println(
+        "\nPlease Enter an Option:\n"
         + "\n1).  Display all accommodations"
         + "\n2).  Display available accommodations"
         + "\n3).  Add customer"
@@ -20,12 +27,19 @@ public class MtBullerAdmin {
         + "\n5).  Create a bundle"
         + "\n6).  List bundles"
         + "\n7).  Add a lift pass to bundle"
-        + "\n8).  Add lesson fees to bundle"
+        + "\n8).  Add lessons to bundle"
         + "\n9).  Save bundles to file"
         + "\n10). Read bundles from file"
         + "\n11). Quit\n"
         );
-        int optionEntered = scanner.nextInt();
+        System.out.println("------------------------------------------------------------\n");
+        try {
+            optionEntered = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            scanner.nextLine();
+            return;
+        }
         switch (optionEntered) {
             case 1:
                 resort.displayAllAccommodations();
@@ -64,5 +78,5 @@ public class MtBullerAdmin {
             default:
                 break;
         }
-        }
     }
+}
