@@ -11,6 +11,7 @@ public class AccommodationsWindow extends ApplicationWindow implements ActionLis
 
     private JButton btnShowAll;
     private JButton btnShowAvailable;
+    private JTextArea txtMessage;
 
     private MtBullerResort resort = new MtBullerResort();
 
@@ -30,12 +31,12 @@ public class AccommodationsWindow extends ApplicationWindow implements ActionLis
         pnlButtons.add(btnShowAll);
         pnlButtons.add(btnShowAvailable);
 
-        JPanel pnlCenter = new JPanel();
-        pnlCenter.setBackground(new Color(180, 217, 239));
-        pnlCenter.add(new JLabel("Accommodations stuff go here"));
+        txtMessage = new JTextArea(5, 20);
+        txtMessage.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(txtMessage);
 
         panel.add(pnlButtons, BorderLayout.NORTH);
-        panel.add(pnlCenter,  BorderLayout.CENTER);
+        panel.add(scrollPane,  BorderLayout.CENTER);
 
         return panel;
     }
@@ -43,9 +44,9 @@ public class AccommodationsWindow extends ApplicationWindow implements ActionLis
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource() == btnShowAll) {
-			resort.displayAllAccommodations();
+            txtMessage.setText(resort.getAllAccommodationsAsString());
 		} else if (ae.getSource() == btnShowAvailable) {
-            resort.displayAvailableAccommodations();
+            txtMessage.setText(resort.getAvailableAccommodationsAsString());
 		}
 	}
 

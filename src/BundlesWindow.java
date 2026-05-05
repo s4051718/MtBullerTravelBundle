@@ -10,6 +10,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
     }
 
     private JButton btnShowAll;
+    private JTextArea txtMessage;
 
     private MtBullerResort resort = new MtBullerResort();
 
@@ -26,12 +27,12 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 
         pnlButtons.add(btnShowAll);
 
-        JPanel pnlCenter = new JPanel();
-        pnlCenter.setBackground(new Color(253, 214, 166));
-        pnlCenter.add(new JLabel("Bundles go here"));
+        txtMessage = new JTextArea(5, 20);
+        txtMessage.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(txtMessage);
 
         panel.add(pnlButtons, BorderLayout.NORTH);
-        panel.add(pnlCenter,  BorderLayout.CENTER);
+        panel.add(scrollPane,  BorderLayout.CENTER);
 
         return panel;
     }
@@ -39,7 +40,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource() == btnShowAll) {
-			resort.listTravelBundles();
+			txtMessage.setText(resort.getAllBundlesAsString());
 		}
 	}
 

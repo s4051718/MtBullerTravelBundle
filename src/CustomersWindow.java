@@ -10,6 +10,7 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
     }
 
     private JButton btnShowAll;
+    private JTextArea txtMessage;
 
     private MtBullerResort resort = new MtBullerResort();
 
@@ -26,12 +27,12 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
 
         pnlButtons.add(btnShowAll);
 
-        JPanel pnlCenter = new JPanel();
-        pnlCenter.setBackground(new Color(178, 193, 162));
-        pnlCenter.add(new JLabel("Customer stuff go here"));
+        txtMessage = new JTextArea(5, 20);
+        txtMessage.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(txtMessage);
 
         panel.add(pnlButtons, BorderLayout.NORTH);
-        panel.add(pnlCenter,  BorderLayout.CENTER);
+        panel.add(scrollPane,  BorderLayout.CENTER);
 
         return panel;
     }
@@ -39,7 +40,7 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource() == btnShowAll) {
-			resort.listCustomers();
+			txtMessage.setText(resort.getAllCustomersAsString());
 		}
 	}
 

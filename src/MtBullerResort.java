@@ -550,4 +550,58 @@ public class MtBullerResort {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             return LocalDate.parse(input, formatter);
         }
+
+
+    // GUI
+
+    public String getAllAccommodationsAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (Accommodation room : accommodations) {
+            String status = room.isAvailable() ? "Available" : "Booked";
+            sb.append("ID: " + room.getId()
+                + " | Type: " + room.getType()
+                + " | Price: $" + room.getPrice()
+                + " | Status: " + status + "\n");
+        }
+        return sb.toString();
+    }
+
+    public String getAvailableAccommodationsAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (Accommodation room : accommodations) {
+            if (!room.isAvailable()) {
+                continue;
+            }
+            sb.append("ID: " + room.getId()
+                + " | Type: " + room.getType()
+                + " | Price: $" + room.getPrice()
+                + " | Status: Available" + "\n");
+        }
+        return sb.toString();
+    }
+
+    public String getAllCustomersAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (Customer customer : customers) {
+            sb.append("\n" + "ID: " + customer.getId()
+                + "\n" + " Name: " + customer.getName()
+                + "\n" + " Ski Level: " + customer.getLevel());
+        }
+        return sb.toString();
+    }
+
+    public String getAllBundlesAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (TravelBundle bundle : travelBundles) {
+            sb.append("Customer: " + bundle.getCustomer()
+                + " | Accommodation: " + bundle.getAccommodation()
+                + " | Lift Pass: " + bundle.getLiftPass()
+                + " | Start Date: " + bundle.getStartDate()
+                + " | Accommodation Nights: " + bundle.getAccommodationNights()
+                + " | Lift Pass Days: " + bundle.getLiftPassDays()
+                + " | Number of Lessons: " + bundle.getNumberofLessons()
+                + " | Total Price: $" + bundle.getPrice());
+        }
+        return sb.toString();
+    }
 }
