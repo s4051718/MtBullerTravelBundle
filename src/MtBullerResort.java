@@ -72,7 +72,6 @@ public class MtBullerResort {
             System.out.println("ID: " + room.getId() + " | Type: " + room.getType() + " | Price: $" + room.getPrice() + " | Status: " + availability);
         }
         System.out.println("------------------------------------------------------------");
-        pauseForUser();
     }
 
     public void displayAvailableAccommodations() {
@@ -86,7 +85,6 @@ public class MtBullerResort {
             }
         }
         System.out.println("------------------------------------------------------------");
-        pauseForUser();
     }
 
     public Customer addCustomer() {

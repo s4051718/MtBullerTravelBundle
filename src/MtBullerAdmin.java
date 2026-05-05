@@ -43,9 +43,11 @@ public class MtBullerAdmin {
         switch (optionEntered) {
             case 1:
                 resort.displayAllAccommodations();
+                resort.pauseForUser();
                 break;
             case 2:
                 resort.displayAvailableAccommodations();
+                resort.pauseForUser();
                 break;
             case 3:
                 resort.addCustomer();
