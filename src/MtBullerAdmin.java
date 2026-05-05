@@ -55,12 +55,14 @@ public class MtBullerAdmin {
                 break;
             case 4:
                 resort.listCustomers();
+                resort.pauseForUser();
                 break;
             case 5:
                 resort.createTravelBundle();
                 break;
             case 6:
                 resort.listTravelBundles();
+                resort.pauseForUser();
                 break;
             case 7:
                 resort.addLiftPassToBundle();

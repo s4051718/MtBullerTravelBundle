@@ -156,7 +156,6 @@ public class MtBullerResort {
             System.out.println("ID: " + customer.getId() + " | Name: " + customer.getName() + " | Level: " + customer.getLevel());
         }
         System.out.println("------------------------------------------------------------");
-        pauseForUser();
     }
 
     public void createTravelBundle() {
@@ -339,7 +338,6 @@ public class MtBullerResort {
             System.out.println(bundle);
         }
         System.out.println("------------------------------------------------------------");
-        pauseForUser();
     }
 
     public void addLiftPassToBundle() {
