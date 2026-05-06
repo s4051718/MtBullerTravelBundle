@@ -604,4 +604,12 @@ public class MtBullerResort {
         }
         return sb.toString();
     }
+
+    public Customer addCustomerFromGUI(String name, SkiingLevel level) {
+        int newId = generateNextCustomerId();
+        Customer customer = new Customer(newId, name, level);
+        customers.add(customer);
+        writeCustomersToFile();
+        return customer;
+    }
 }
