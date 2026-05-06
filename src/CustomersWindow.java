@@ -99,6 +99,8 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
                 if (confirm == JOptionPane.OK_OPTION) {
                     resort.addCustomerFromGUI(name, level);
                     txtMessage.setText(resort.getAllCustomersAsString());
+                    nameJTextField.setText("");
+                    levelButtonGroup.clearSelection();
                 }
 		}
 	}

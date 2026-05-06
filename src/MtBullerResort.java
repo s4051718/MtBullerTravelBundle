@@ -583,9 +583,9 @@ public class MtBullerResort {
     public String getAllCustomersAsString() {
         StringBuilder sb = new StringBuilder();
         for (Customer customer : customers) {
-            sb.append("\n" + "ID: " + customer.getId()
+            sb.append("ID: " + customer.getId()
                 + "\n" + " Name: " + customer.getName()
-                + "\n" + " Ski Level: " + customer.getLevel());
+                + "\n" + " Ski Level: " + customer.getLevel() + "\n\n");
         }
         return sb.toString();
     }
