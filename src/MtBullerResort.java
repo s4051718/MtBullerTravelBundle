@@ -566,18 +566,33 @@ public class MtBullerResort {
         return sb.toString();
     }
 
-    public String getAvailableAccommodationsAsString() {
-        StringBuilder sb = new StringBuilder();
+    // public String getAvailableAccommodationsAsString() {
+    //     StringBuilder sb = new StringBuilder();
+    //     for (Accommodation room : accommodations) {
+    //         if (!room.isAvailable()) {
+    //             continue;
+    //         }
+    //         sb.append("ID: " + room.getId()
+    //             + " | Type: " + room.getType()
+    //             + " | Price: $" + room.getPrice()
+    //             + " | Status: Available" + "\n");
+    //     }
+    //     return sb.toString();
+    // }
+
+    public String getFilteredAccommodationsAsString(String type, String status) {
+        String result = "";
         for (Accommodation room : accommodations) {
-            if (!room.isAvailable()) {
-                continue;
+            boolean matchesType = type.equals("All")
+                || room.getType().equals(type);
+            boolean matchesStatus = status.equals("All")
+                || room.isAvailable();
+            if (matchesType && matchesStatus) {
+                result += "ID: " + room.getId() + " | Type: " + room.getType()
+                    + " | Price: $" + room.getPrice() + "\n";
             }
-            sb.append("ID: " + room.getId()
-                + " | Type: " + room.getType()
-                + " | Price: $" + room.getPrice()
-                + " | Status: Available" + "\n");
         }
-        return sb.toString();
+        return result;
     }
 
     public String getAllCustomersAsString() {
@@ -588,6 +603,14 @@ public class MtBullerResort {
                 + "\n" + " Ski Level: " + customer.getLevel() + "\n\n");
         }
         return sb.toString();
+    }
+
+    public Customer addCustomerFromGUI(String name, SkiingLevel level) {
+        int newId = generateNextCustomerId();
+        Customer customer = new Customer(newId, name, level);
+        customers.add(customer);
+        writeCustomersToFile();
+        return customer;
     }
 
     public String getAllBundlesAsString() {
@@ -603,13 +626,5 @@ public class MtBullerResort {
                 + " | Total Price: $" + bundle.getPrice());
         }
         return sb.toString();
-    }
-
-    public Customer addCustomerFromGUI(String name, SkiingLevel level) {
-        int newId = generateNextCustomerId();
-        Customer customer = new Customer(newId, name, level);
-        customers.add(customer);
-        writeCustomersToFile();
-        return customer;
     }
 }
