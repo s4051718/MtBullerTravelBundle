@@ -5,6 +5,7 @@ import accommodation.Accommodation;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 public class BundlesWindow extends ApplicationWindow implements ActionListener {
 
@@ -29,7 +30,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         MtBullerResort resort = new MtBullerResort(); // I have to initialise this here too because the data is used in the buildMainPanel method which occurs after super calls the constructor.
 
         JPanel panel = new JPanel(new BorderLayout());
-        setSize(1000, 600);
+        setSize(1300, 600);
 
         JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
         pnlButtons.setBackground(new Color(253, 214, 166));
@@ -97,7 +98,20 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource() == btnShowAll) {
 			txtMessage.setText(resort.getAllBundlesAsString());
-		}
+        } else if (ae.getSource() == btnCreateBundle) {
+            Customer customer = (Customer) customerJComboBox.getSelectedItem();
+
+            Accommodation accommodation = (Accommodation) accommodationJComboBox.getSelectedItem();
+
+            LocalDate startDate = resort.parseIssueDate(startDateJTextField.getText());
+            int nights = Integer.parseInt(nightsJTextField.getText());
+            int liftPassDays = Integer.parseInt(liftPassDaysJTextField.getText());
+            int lessons = Integer.parseInt(lessonsJTextField.getText());
+
+            resort.createBundleFromGUI(customer, accommodation, startDate, nights, liftPassDays, lessons);
+
+            txtMessage.setText(resort.getAllBundlesAsString());
+        }
 	}
 
     public static void main(String[] args) {

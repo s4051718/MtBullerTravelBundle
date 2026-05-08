@@ -629,7 +629,20 @@ public class MtBullerResort {
     }
 
     public void createBundleFromGUI(Customer customer, Accommodation accommodation, LocalDate startDate, int nights, int liftPassDays, int lessons) {
+        LiftPassType passType = null;
+        if (liftPassDays == 0) {
+            passType = LiftPassType.NONE;
+        } else if (liftPassDays >= 30) {
+            passType = LiftPassType.SEASON;
+        } else if (liftPassDays >= 5) {
+            passType = LiftPassType.FIVE_DAYS;
+        } else {
+            passType = LiftPassType.SINGLE_DAY;
+        }
+        TravelBundle newBundle = new TravelBundle(customer, accommodation, passType, startDate, nights, liftPassDays, lessons);
 
+        travelBundles.add(newBundle);
+        accommodation.setAvailable(false);
     }
 
     // GUI Helper Methods
