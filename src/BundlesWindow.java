@@ -26,6 +26,8 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 
     @Override
     protected JPanel buildMainPanel() {
+        MtBullerResort resort = new MtBullerResort(); // I have to initialise this here too because the data is used in the buildMainPanel method which occurs after super calls the constructor.
+
         JPanel panel = new JPanel(new BorderLayout());
         setSize(1000, 600);
 
@@ -44,9 +46,17 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         JPanel newBundlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel customerJLabel = new JLabel("Customer:");
         customerJComboBox = new JComboBox<Customer>();
+        for (Customer c : resort.getCustomers()) {
+            customerJComboBox.addItem(c);
+        }
         customerJComboBox.addActionListener(this);
         JLabel accommodationJLabel = new JLabel("Accommodation:");
         accommodationJComboBox = new JComboBox<Accommodation>();
+        for (Accommodation a : resort.getAccommodations()) {
+            if (a.isAvailable()) {
+                accommodationJComboBox.addItem(a);
+            }
+        }
         accommodationJComboBox.addActionListener(this);
         JLabel dateJLabel = new JLabel("Date:");
         startDateJTextField = new JTextField(7);

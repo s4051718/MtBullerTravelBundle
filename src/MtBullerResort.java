@@ -627,4 +627,17 @@ public class MtBullerResort {
         }
         return sb.toString();
     }
+
+    public void createBundleFromGUI(Customer customer, Accommodation accommodation, LocalDate startDate, int nights, int liftPassDays, int lessons) {
+
+    }
+
+    // GUI Helper Methods
+    public ArrayList<Customer> getCustomers() {
+    return customers;
+    }
+
+    public ArrayList<Accommodation> getAccommodations() {
+        return accommodations;
+    }
 }

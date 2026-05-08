@@ -48,13 +48,7 @@ public abstract class Accommodation implements Pricable, Serializable {
     }
 
     @Override
-    public String toString() {
-        return
-        "------------------------------------------------------------"
-        + "\n                   Accommodation Details                    "
-        + "\n------------------------------------------------------------"
-        + "\nAccommodation ID: " + id
-        + "\nAccommodation Type: " + type
-        + "\nAccommodation Price: $" + price + " per night";
+    public String toString()  {
+        return id + " - " + type + " $" + price + "/night";
     }
 }
