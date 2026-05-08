@@ -27,7 +27,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 
     @Override
     protected JPanel buildMainPanel() {
-        MtBullerResort resort = new MtBullerResort(); // I have to initialise this here too because the data is used in the buildMainPanel method which occurs after super calls the constructor.
+        resort = new MtBullerResort(); // I have to initialise this here too because the data is used in the buildMainPanel method which occurs after super calls the constructor. // WITHOUT the type declaration otherwise no shared data
 
         JPanel panel = new JPanel(new BorderLayout());
         setSize(1300, 600);
