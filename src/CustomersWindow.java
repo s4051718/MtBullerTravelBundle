@@ -22,7 +22,6 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
 
     private MtBullerResort resort = new MtBullerResort();
 
-
     @Override
     protected JPanel buildMainPanel() {
         JPanel panel = new JPanel(new BorderLayout());
@@ -41,20 +40,30 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
 
         JPanel newCustomerPanel = new JPanel();
         newCustomerPanel.setLayout(new BoxLayout(newCustomerPanel, BoxLayout.Y_AXIS));
+
         JLabel newCustomerJLabel = new JLabel("Add New Customer");
+
         nameJLabel = new JLabel("Name:");
+
         nameJTextField = new JTextField();
         nameJTextField.setMaximumSize(new Dimension(240, 25));
+
         levelJLabel = new JLabel("Ski Level:");
+
         levelButtonGroup = new ButtonGroup();
+
         beginnerJRadioButton = new JRadioButton("Beginner");
-        intermediateJRadioButton = new JRadioButton("Intermediate");
-        expertJRadioButton = new JRadioButton("Expert");
         levelButtonGroup.add(beginnerJRadioButton);
+
+        intermediateJRadioButton = new JRadioButton("Intermediate");
         levelButtonGroup.add(intermediateJRadioButton);
+
+        expertJRadioButton = new JRadioButton("Expert");
         levelButtonGroup.add(expertJRadioButton);
+
         addCustomerJButton = new JButton("Add Customer");
         addCustomerJButton.addActionListener(this);
+
         newCustomerPanel.add(newCustomerJLabel);
         newCustomerPanel.add(nameJLabel);
         newCustomerPanel.add(nameJTextField);

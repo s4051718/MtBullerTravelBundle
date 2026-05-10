@@ -30,40 +30,43 @@ public class AccommodationsWindow extends ApplicationWindow implements ActionLis
         filterJPanel.setBackground(new Color(180, 217, 239));
 
         accommodationTypeJLabel = new JLabel("Accommodation Type:");
-        filterJPanel.add(accommodationTypeJLabel);
+
         String[] accommodationTypes = {
             "All",
             "Lodge",
             "Apartment",
             "Hotel"
         };
-
         accommodationTypeJComboBox = new JComboBox<>(accommodationTypes);
         accommodationTypeJComboBox.addActionListener(this);
-        filterJPanel.add(accommodationTypeJComboBox);
 
         accommodationStatusJLabel = new JLabel("Accommodation Status:");
-        filterJPanel.add(accommodationStatusJLabel);
+
         String[] accommodationStatuses = {
             "All",
             "Available"
         };
-
         accommodationStatusJComboBox = new JComboBox<>(accommodationStatuses);
         accommodationStatusJComboBox.addActionListener(this);
-        filterJPanel.add(accommodationStatusJComboBox);
 
         accommodationPriceJLabel = new JLabel("Max Price:");
+
         accommodationPriceJTextField = new JTextField(8);
+
+        btnApply = new JButton("Apply");
+        btnApply.addActionListener(this);
+
+        btnReset = new JButton("Reset");
+        btnReset.addActionListener(this);
+
+        filterJPanel.add(accommodationTypeJLabel);
+        filterJPanel.add(accommodationTypeJComboBox);
+        filterJPanel.add(accommodationStatusJLabel);
+        filterJPanel.add(accommodationStatusJComboBox);
         filterJPanel.add(accommodationPriceJLabel);
         filterJPanel.add(accommodationPriceJTextField);
-        btnApply = new JButton("Apply");
-        btnReset = new JButton("Reset");
-        btnApply.addActionListener(this);
-        btnReset.addActionListener(this);
         filterJPanel.add(btnApply);
         filterJPanel.add(btnReset);
-
 
         txtMessage = new JTextArea(5, 20);
         txtMessage.setEditable(false);
