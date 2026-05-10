@@ -128,31 +128,36 @@ public class TravelBundle implements Pricable, Serializable {
         return totalBundlePrice;
     }
 
+    // @Override
+    // public String toString() {
+    //     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    //     String formattedDate;
+
+    //     if (startDate != null) {
+    //         formattedDate = startDate.format(formatter);
+    //     } else {
+    //         formattedDate = "Not Set";
+    //     }
+
+    //     return
+    //     "\n------------------------------------------------------------"
+    //     + "\n                   Travel Bundle Details                    "
+    //     + "\n------------------------------------------------------------"
+    //     + "\n" + customer
+    //     + "\n------------------------------------------------------------"
+    //     + "\n                       Bundle Summary                       "
+    //     + "\n------------------------------------------------------------"
+    //     + "\nStart Date:        " + formattedDate
+    //     + "\nAccommodation:     " + accommodation.getType() + " (ID: " + accommodation.getId() + ")"
+    //     + "\nDuration:          " + accommodationNights + " nights"
+    //     + "\nLift Pass:         " + liftPass + " (" + liftPassDays + " days)"
+    //     + "\nSki Lessons:       " + numberofLessons
+    //     + "\n------------------------------------------------------------"
+    //     + "\nTotal Bundle Price: $" + getPrice();
+    // }
+
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String formattedDate;
-
-        if (startDate != null) {
-            formattedDate = startDate.format(formatter);
-        } else {
-            formattedDate = "Not Set";
-        }
-
-        return
-        "\n------------------------------------------------------------"
-        + "\n                   Travel Bundle Details                    "
-        + "\n------------------------------------------------------------"
-        + "\n" + customer
-        + "\n------------------------------------------------------------"
-        + "\n                       Bundle Summary                       "
-        + "\n------------------------------------------------------------"
-        + "\nStart Date:        " + formattedDate
-        + "\nAccommodation:     " + accommodation.getType() + " (ID: " + accommodation.getId() + ")"
-        + "\nDuration:          " + accommodationNights + " nights"
-        + "\nLift Pass:         " + liftPass + " (" + liftPassDays + " days)"
-        + "\nSki Lessons:       " + numberofLessons
-        + "\n------------------------------------------------------------"
-        + "\nTotal Bundle Price: $" + getPrice();
+        return customer.getName() + " - " + accommodation.getId() + " - " + accommodation.getType();
     }
 }

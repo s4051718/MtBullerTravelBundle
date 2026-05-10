@@ -621,13 +621,37 @@ public class MtBullerResort {
         accommodation.setAvailable(false);
     }
 
+    public void addLiftPassToBundle(TravelBundle bundle, int days) {
+        LiftPassType passType;
+        if (days == 0) {
+            passType = LiftPassType.NONE;
+        } else if (days >= 30) {
+            passType = LiftPassType.SEASON;
+        } else if (days >= 5) {
+            passType = LiftPassType.FIVE_DAYS;
+        } else {
+            passType = LiftPassType.SINGLE_DAY;
+        }
+        bundle.setLiftPass(passType);
+        bundle.setLiftPassDays(days);
+    }
+
+    public void addLessonsToBundle(TravelBundle bundle, int lessons) {
+        bundle.setNumberofLessons(bundle.getNumberofLessons() + lessons);
+    }
+
     // GUI Helper Methods
+    // Getters
     public ArrayList<Customer> getCustomers() {
     return customers;
     }
 
     public ArrayList<Accommodation> getAccommodations() {
         return accommodations;
+    }
+
+    public ArrayList<TravelBundle> getBundles() {
+        return travelBundles;
     }
 
     public void loadAccommodationsFromFile() {
