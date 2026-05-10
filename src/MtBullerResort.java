@@ -526,8 +526,7 @@ public class MtBullerResort {
         }
 
 
-    // GUI
-
+    // GUI Methods
     public String getAllAccommodationsAsString() {
         StringBuilder sb = new StringBuilder();
         for (Accommodation room : accommodations) {
@@ -622,18 +621,20 @@ public class MtBullerResort {
     }
 
     public void addLiftPassToBundle(TravelBundle bundle, int days) {
+        int totalDays = bundle.getLiftPassDays() + days;
+
         LiftPassType passType;
-        if (days == 0) {
+        if (totalDays == 0) {
             passType = LiftPassType.NONE;
-        } else if (days >= 30) {
+        } else if (totalDays >= 30) {
             passType = LiftPassType.SEASON;
-        } else if (days >= 5) {
+        } else if (totalDays >= 5) {
             passType = LiftPassType.FIVE_DAYS;
         } else {
             passType = LiftPassType.SINGLE_DAY;
         }
         bundle.setLiftPass(passType);
-        bundle.setLiftPassDays(days);
+        bundle.setLiftPassDays(totalDays);
     }
 
     public void addLessonsToBundle(TravelBundle bundle, int lessons) {
