@@ -532,10 +532,11 @@ public class MtBullerResort {
         StringBuilder sb = new StringBuilder();
         for (Accommodation room : accommodations) {
             String status = room.isAvailable() ? "Available" : "Booked";
-            sb.append("ID: " + room.getId()
-                + " | Type: " + room.getType()
-                + " | Price: $" + room.getPrice()
-                + " | Status: " + status + "\n");
+            sb.append("ID:     " + room.getId() + "\n"
+                + "Type:   " + room.getType() + "\n"
+                + "Price:  $" + room.getPrice() + "/night\n"
+                + "Status: " + status + "\n"
+                + "------------------------------------------------------------\n");
         }
         return sb.toString();
     }
@@ -555,26 +556,29 @@ public class MtBullerResort {
     // }
 
     public String getFilteredAccommodationsAsString(String type, String status) {
-        String result = "";
+        StringBuilder sb = new StringBuilder();
         for (Accommodation room : accommodations) {
-            boolean matchesType = type.equals("All")
-                || room.getType().equals(type);
-            boolean matchesStatus = status.equals("All")
-                || room.isAvailable();
+            boolean matchesType = type.equals("All") || room.getType().equals(type);
+            boolean matchesStatus = status.equals("All") || room.isAvailable();
             if (matchesType && matchesStatus) {
-                result += "ID: " + room.getId() + " | Type: " + room.getType()
-                    + " | Price: $" + room.getPrice() + "\n";
+                String roomStatus = room.isAvailable() ? "Available" : "Booked";
+                sb.append("ID:     " + room.getId() + "\n"
+                    + "Type:   " + room.getType() + "\n"
+                    + "Price:  $" + room.getPrice() + "/night\n"
+                    + "Status: " + roomStatus + "\n"
+                    + "------------------------------------------------------------\n");
             }
         }
-        return result;
+        return sb.toString();
     }
 
     public String getAllCustomersAsString() {
         StringBuilder sb = new StringBuilder();
         for (Customer customer : customers) {
-            sb.append("ID: " + customer.getId()
-                + "\n" + " Name: " + customer.getName()
-                + "\n" + " Ski Level: " + customer.getLevel() + "\n\n");
+            sb.append("ID:        " + customer.getId() + "\n"
+                + "Name:      " + customer.getName() + "\n"
+                + "Ski Level: " + customer.getLevel() + "\n"
+                + "------------------------------------------------------------\n");
         }
         return sb.toString();
     }
@@ -590,14 +594,12 @@ public class MtBullerResort {
     public String getAllBundlesAsString() {
         StringBuilder sb = new StringBuilder();
         for (TravelBundle bundle : travelBundles) {
-            sb.append("Customer: " + bundle.getCustomer()
-                + " | Accommodation: " + bundle.getAccommodation()
-                + " | Lift Pass: " + bundle.getLiftPass()
-                + " | Start Date: " + bundle.getStartDate()
-                + " | Accommodation Nights: " + bundle.getAccommodationNights()
-                + " | Lift Pass Days: " + bundle.getLiftPassDays()
-                + " | Number of Lessons: " + bundle.getNumberofLessons()
-                + " | Total Price: $" + bundle.getPrice());
+            sb.append("Customer:    " + bundle.getCustomer() + "\n"
+                + "Stay:        " + bundle.getAccommodation() + " x" + bundle.getAccommodationNights() + " nights from " + bundle.getStartDate() + "\n"
+                + "Lift Pass:   " + bundle.getLiftPass() + " (" + bundle.getLiftPassDays() + " days)" + "\n"
+                + "Lessons:     " + bundle.getNumberofLessons() + "\n"
+                + "Total Price: $" + bundle.getPrice() + "\n"
+                + "------------------------------------------------------------\n");
         }
         return sb.toString();
     }
