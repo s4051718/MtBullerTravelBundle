@@ -27,34 +27,8 @@ public class MtBullerResort {
     public MtBullerResort() {
 
         loadCustomersFromFile();
-
-        // Populate the accommodations ArrayList
-        LodgeRoom l1LodgeRoom = new LodgeRoom("L1", 150);
-        LodgeRoom l2LodgeRoom = new LodgeRoom("L2", 150);
-        LodgeRoom l3LodgeRoom = new LodgeRoom("L3", 150);
-        LodgeRoom l4LodgeRoom = new LodgeRoom("L4", 150);
-        Apartment a1Apartment = new Apartment("A1", 120);
-        Apartment a2Apartment = new Apartment("A2", 120);
-        Apartment a3Apartment = new Apartment("A3", 120);
-        Apartment a4Apartment = new Apartment("A4", 120);
-        HotelRoom h1HotelRoom = new HotelRoom("H1", 100);
-        HotelRoom h2HotelRoom = new HotelRoom("H2", 100);
-        HotelRoom h3HotelRoom = new HotelRoom("H3", 100);
-        HotelRoom h4HotelRoom = new HotelRoom("H4", 100);
-
-
-        accommodations.add(l1LodgeRoom);
-        accommodations.add(l2LodgeRoom);
-        accommodations.add(l3LodgeRoom);
-        accommodations.add(l4LodgeRoom);
-        accommodations.add(a1Apartment);
-        accommodations.add(a2Apartment);
-        accommodations.add(a3Apartment);
-        accommodations.add(a4Apartment);
-        accommodations.add(h1HotelRoom);
-        accommodations.add(h2HotelRoom);
-        accommodations.add(h3HotelRoom);
-        accommodations.add(h4HotelRoom);
+        loadAccommodationsFromFile();
+        readBundleFromFile();
     }
 
     public void displayAllAccommodations() {
@@ -652,5 +626,62 @@ public class MtBullerResort {
 
     public ArrayList<Accommodation> getAccommodations() {
         return accommodations;
+    }
+
+    public void loadAccommodationsFromFile() {
+        Path path = Path.of("accommodations.ser");
+
+        if (Files.exists(path)) {
+            try (ObjectInputStream objectStream = new ObjectInputStream(Files.newInputStream(path))) {
+                accommodations = (ArrayList<Accommodation>) objectStream.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Error loading travel bundles: " + e.getMessage());
+            }
+        } else {
+            this.accommodations = new ArrayList<>();
+
+            // Populate the accommodations ArrayList
+            LodgeRoom l1LodgeRoom = new LodgeRoom("L1", 150);
+            LodgeRoom l2LodgeRoom = new LodgeRoom("L2", 150);
+            LodgeRoom l3LodgeRoom = new LodgeRoom("L3", 150);
+            LodgeRoom l4LodgeRoom = new LodgeRoom("L4", 150);
+            Apartment a1Apartment = new Apartment("A1", 120);
+            Apartment a2Apartment = new Apartment("A2", 120);
+            Apartment a3Apartment = new Apartment("A3", 120);
+            Apartment a4Apartment = new Apartment("A4", 120);
+            HotelRoom h1HotelRoom = new HotelRoom("H1", 100);
+            HotelRoom h2HotelRoom = new HotelRoom("H2", 100);
+            HotelRoom h3HotelRoom = new HotelRoom("H3", 100);
+            HotelRoom h4HotelRoom = new HotelRoom("H4", 100);
+
+
+            accommodations.add(l1LodgeRoom);
+            accommodations.add(l2LodgeRoom);
+            accommodations.add(l3LodgeRoom);
+            accommodations.add(l4LodgeRoom);
+            accommodations.add(a1Apartment);
+            accommodations.add(a2Apartment);
+            accommodations.add(a3Apartment);
+            accommodations.add(a4Apartment);
+            accommodations.add(h1HotelRoom);
+            accommodations.add(h2HotelRoom);
+            accommodations.add(h3HotelRoom);
+            accommodations.add(h4HotelRoom);
+        }
+    }
+
+    public void writeAccommodationsToFile() {
+
+        Path path = Path.of("accommodations.ser");
+
+        try (OutputStream out = Files.newOutputStream(path);
+            ObjectOutputStream objectStream = new ObjectOutputStream(out)) {
+                objectStream.writeObject(accommodations);
+                objectStream.flush();
+                System.out.println("Save successful!");
+
+        } catch (IOException e) {
+            System.out.println("Error saving accommodations: " + e.getMessage());
+        }
     }
 }
