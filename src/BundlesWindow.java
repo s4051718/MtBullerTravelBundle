@@ -8,9 +8,12 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
 public class BundlesWindow extends ApplicationWindow implements ActionListener {
+    private MtBullerResort resort;
 
-    public BundlesWindow() {
+    public BundlesWindow(MtBullerResort resort) {
         super("Bundles");
+        this.resort = resort;
+        initPanel();
     }
 
     private JButton btnShowAll;
@@ -28,11 +31,8 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
     private JButton btnAddLiftPass;
     private JButton btnAddLessons;
 
-    private MtBullerResort resort = new MtBullerResort();
-
     @Override
     protected JPanel buildMainPanel() {
-        resort = new MtBullerResort(); // I have to initialise this here too because the data is used in the buildMainPanel method which occurs after super calls the constructor. // WITHOUT the type declaration otherwise no shared data
 
         JPanel panel = new JPanel(new BorderLayout());
         setSize(1300, 600);
@@ -200,7 +200,8 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 	}
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BundlesWindow().setVisible(true));
+        SwingUtilities.invokeLater(() ->
+            new BundlesWindow(new MtBullerResort()).setVisible(true));
     }
 
     private void refreshBundleComboBox() {

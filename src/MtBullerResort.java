@@ -435,7 +435,6 @@ public class MtBullerResort {
             } catch (IOException e) {
                 System.out.println("Error saving bundles: " + e.getMessage());
             }
-        pauseForUser();
     }
 
     public void readBundleFromFile() {
@@ -455,7 +454,6 @@ public class MtBullerResort {
                 System.out.println("Error reading bundles: " + e.getMessage());
             }
             System.out.println(travelBundles);
-        pauseForUser();
     }
 
     // Helper Methods
@@ -618,6 +616,8 @@ public class MtBullerResort {
 
         travelBundles.add(newBundle);
         accommodation.setAvailable(false);
+        writeBundleToFile();
+        writeAccommodationsToFile();
     }
 
     public void addLiftPassToBundle(TravelBundle bundle, int days) {

@@ -4,9 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AccommodationsWindow extends ApplicationWindow implements ActionListener {
+    private MtBullerResort resort;
 
-    public AccommodationsWindow() {
+    public AccommodationsWindow(MtBullerResort resort) {
         super("Accommodations");
+        this.resort = resort;
+        initPanel();
     }
 
     private JLabel accommodationTypeJLabel;
@@ -19,8 +22,6 @@ public class AccommodationsWindow extends ApplicationWindow implements ActionLis
     private JTextField accommodationPriceJTextField;
     private JButton btnApply;
     private JButton btnReset;
-
-    private MtBullerResort resort = new MtBullerResort();
 
     @Override
     protected JPanel buildMainPanel() {
@@ -100,6 +101,7 @@ public class AccommodationsWindow extends ApplicationWindow implements ActionLis
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new AccommodationsWindow().setVisible(true));
+        SwingUtilities.invokeLater(() ->
+            new AccommodationsWindow(new MtBullerResort()).setVisible(true));
     }
 }

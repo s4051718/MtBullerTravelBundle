@@ -4,9 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CustomersWindow extends ApplicationWindow implements ActionListener {
+    private MtBullerResort resort;
 
-    public CustomersWindow() {
+    public CustomersWindow(MtBullerResort resort) {
         super("Customers");
+        this.resort = resort;
+        initPanel();
     }
 
     private JButton btnShowAll;
@@ -19,8 +22,6 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
     private JRadioButton intermediateJRadioButton;
     private JRadioButton expertJRadioButton;
     private JButton addCustomerJButton;
-
-    private MtBullerResort resort = new MtBullerResort();
 
     @Override
     protected JPanel buildMainPanel() {
@@ -115,6 +116,7 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
 	}
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new CustomersWindow().setVisible(true));
+        SwingUtilities.invokeLater(() ->
+            new CustomersWindow(new MtBullerResort()).setVisible(true));
     }
 }

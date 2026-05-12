@@ -72,9 +72,11 @@ public class MtBullerAdmin {
                 break;
             case 9:
                 resort.writeBundleToFile();
+                resort.pauseForUser();
                 break;
             case 10:
                 resort.readBundleFromFile();
+                resort.pauseForUser();
                 break;
             case 11:
                 exitAdmin = true;

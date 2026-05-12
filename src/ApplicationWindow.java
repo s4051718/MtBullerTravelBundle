@@ -19,10 +19,17 @@ public abstract class ApplicationWindow extends JFrame {
         pnlHeader.setOpaque(true);
         pnlHeader.add(lblTitle);
         add(pnlHeader, BorderLayout.NORTH);
+    }
 
-        pnlMain = buildMainPanel();
-        add(pnlMain, BorderLayout.CENTER);
+    public JPanel getMainPanel() {
+        return pnlMain;
     }
 
     protected abstract JPanel buildMainPanel();
+
+    protected void initPanel() {
+        pnlMain = buildMainPanel();
+        add(pnlMain, BorderLayout.CENTER);
+
+    }
 }
