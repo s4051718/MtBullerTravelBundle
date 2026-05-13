@@ -179,23 +179,40 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
             int liftPassDays = Integer.parseInt(liftPassDaysJTextField.getText());
             int lessons = Integer.parseInt(lessonsJTextField.getText());
 
-            resort.createBundleFromGUI(customer, accommodation, startDate, nights, liftPassDays, lessons);
-
-            txtMessage.setText(resort.getAllBundlesAsString());
-            refreshBundleComboBox();
+            try {
+                resort.createBundleFromGUI(customer, accommodation, startDate, nights, liftPassDays, lessons);
+                txtMessage.setText(resort.getAllBundlesAsString());
+                refreshBundleComboBox();
+            } catch (MtBullerException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Invalid input. Please check all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } else if (ae.getSource() == btnAddLiftPass) {
-            TravelBundle selected = (TravelBundle) bundleSelectJComboBox.getSelectedItem();
-            int days = Integer.parseInt(liftPassAddJTextField.getText());
-            resort.addLiftPassToBundle(selected, days);
-            txtMessage.setText(resort.getAllBundlesAsString());
-            refreshBundleComboBox();
+            try {
+                TravelBundle selected = (TravelBundle) bundleSelectJComboBox.getSelectedItem();
+                int days = Integer.parseInt(liftPassAddJTextField.getText());
+                resort.addLiftPassToBundle(selected, days);
+                txtMessage.setText(resort.getAllBundlesAsString());
+                refreshBundleComboBox();
+            } catch (MtBullerException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
 
         } else if (ae.getSource() == btnAddLessons) {
-            TravelBundle selected = (TravelBundle) bundleSelectJComboBox.getSelectedItem();
-            int lessons = Integer.parseInt(lessonsAddJTextField.getText());
-            resort.addLessonsToBundle(selected, lessons);
-            txtMessage.setText(resort.getAllBundlesAsString());
-            refreshBundleComboBox();
+            try {
+                TravelBundle selected = (TravelBundle) bundleSelectJComboBox.getSelectedItem();
+                int lessons = Integer.parseInt(lessonsAddJTextField.getText());
+                resort.addLessonsToBundle(selected, lessons);
+                txtMessage.setText(resort.getAllBundlesAsString());
+                refreshBundleComboBox();
+            } catch (MtBullerException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
 	}
 

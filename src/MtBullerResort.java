@@ -601,7 +601,29 @@ public class MtBullerResort {
         return sb.toString();
     }
 
-    public void createBundleFromGUI(Customer customer, Accommodation accommodation, LocalDate startDate, int nights, int liftPassDays, int lessons) {
+    public void createBundleFromGUI(Customer customer, Accommodation accommodation, LocalDate startDate, int nights, int liftPassDays, int lessons) throws MtBullerException {
+
+        if (nights <= 0)
+            throw new MtBullerException("Accommodation nights must be at least 1.");
+        if (nights > 30)
+            throw new MtBullerException("Stay duration cannot exceed 30 nights (one season).");
+        if (liftPassDays < 0)
+            throw new MtBullerException("Lift pass days cannot be negative.");
+        if (liftPassDays > nights)
+            throw new MtBullerException("Lift pass days cannot exceed stay duration of " + nights + " nights.");
+        if (lessons < 0)
+            throw new MtBullerException("Lessons cannot be negative.");
+        if (lessons > nights)
+            throw new MtBullerException("Lessons cannot exceed stay duration of " + nights + " nights.");
+        for (TravelBundle bundle : travelBundles) {
+            if (bundle.getCustomer().getId() == customer.getId()) {
+                throw new MtBullerException("Customer already has a bundle.");
+            }
+        }
+        if (!accommodation.isAvailable()) {
+            throw new MtBullerException("Accommodation is no longer available.");
+        }
+
         LiftPassType passType = null;
         if (liftPassDays == 0) {
             passType = LiftPassType.NONE;
@@ -620,11 +642,15 @@ public class MtBullerResort {
         writeAccommodationsToFile();
     }
 
-    public void addLiftPassToBundle(TravelBundle bundle, int days) {
+    public void addLiftPassToBundle(TravelBundle bundle, int days) throws MtBullerException {
         int totalDays = bundle.getLiftPassDays() + days;
 
         LiftPassType passType;
-        if (totalDays == 0) {
+        if (totalDays > 30) {
+            throw new MtBullerException("Total lift pass days cannot exceed 30.");
+        } else if (days < 0) {
+            throw new MtBullerException("Lift pass days cannot be negative.");
+        } else if (totalDays == 0) {
             passType = LiftPassType.NONE;
         } else if (totalDays >= 30) {
             passType = LiftPassType.SEASON;
@@ -637,7 +663,14 @@ public class MtBullerResort {
         bundle.setLiftPassDays(totalDays);
     }
 
-    public void addLessonsToBundle(TravelBundle bundle, int lessons) {
+    public void addLessonsToBundle(TravelBundle bundle, int lessons) throws MtBullerException {
+        if (lessons < 0) {
+            throw new MtBullerException("Lessons cannot be negative.");
+        }
+        if (bundle.getNumberofLessons() + lessons > bundle.getAccommodationNights()) {
+            throw new MtBullerException("Total lessons cannot exceed stay duration of "
+                + bundle.getAccommodationNights() + " nights.");
+        }
         bundle.setNumberofLessons(bundle.getNumberofLessons() + lessons);
     }
 
