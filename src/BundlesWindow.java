@@ -170,19 +170,19 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 		if(ae.getSource() == btnShowAll) {
 			txtMessage.setText(resort.getAllBundlesAsString());
         } else if (ae.getSource() == btnCreateBundle) {
-            Customer customer = (Customer) customerJComboBox.getSelectedItem();
-
-            Accommodation accommodation = (Accommodation) accommodationJComboBox.getSelectedItem();
-
-            LocalDate startDate = resort.parseIssueDate(startDateJTextField.getText());
-            int nights = Integer.parseInt(nightsJTextField.getText());
-            int liftPassDays = Integer.parseInt(liftPassDaysJTextField.getText());
-            int lessons = Integer.parseInt(lessonsJTextField.getText());
-
             try {
+                Customer customer = (Customer) customerJComboBox.getSelectedItem();
+                Accommodation accommodation = (Accommodation) accommodationJComboBox.getSelectedItem();
+
+                LocalDate startDate = resort.parseIssueDate(startDateJTextField.getText());
+                int nights = Integer.parseInt(nightsJTextField.getText());
+                int liftPassDays = Integer.parseInt(liftPassDaysJTextField.getText());
+                int lessons = Integer.parseInt(lessonsJTextField.getText());
+
                 resort.createBundleFromGUI(customer, accommodation, startDate, nights, liftPassDays, lessons);
                 txtMessage.setText(resort.getAllBundlesAsString());
                 refreshBundleComboBox();
+                refreshAccommodationComboBox();
             } catch (MtBullerException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             } catch (Exception e) {
@@ -221,10 +221,20 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
             new BundlesWindow(new MtBullerResort()).setVisible(true));
     }
 
+    // Helper methods
     private void refreshBundleComboBox() {
         bundleSelectJComboBox.removeAllItems();
         for (TravelBundle bundle : resort.getBundles()) {
             bundleSelectJComboBox.addItem(bundle);
+        }
+    }
+
+    private void refreshAccommodationComboBox() {
+        accommodationJComboBox.removeAllItems();
+        for (Accommodation a : resort.getAccommodations()) {
+            if (a.isAvailable()) {
+                accommodationJComboBox.addItem(a);
+            }
         }
     }
 }

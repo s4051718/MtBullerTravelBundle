@@ -603,6 +603,10 @@ public class MtBullerResort {
 
     public void createBundleFromGUI(Customer customer, Accommodation accommodation, LocalDate startDate, int nights, int liftPassDays, int lessons) throws MtBullerException {
 
+        if (startDate.isBefore(LocalDate.now())) {
+            throw new MtBullerException("Booking date cannot be in the past.");
+        }
+
         if (nights <= 0)
             throw new MtBullerException("Accommodation nights must be at least 1.");
         if (nights > 30)
@@ -668,8 +672,7 @@ public class MtBullerResort {
             throw new MtBullerException("Lessons cannot be negative.");
         }
         if (bundle.getNumberofLessons() + lessons > bundle.getAccommodationNights()) {
-            throw new MtBullerException("Total lessons cannot exceed stay duration of "
-                + bundle.getAccommodationNights() + " nights.");
+            throw new MtBullerException("Total lessons cannot exceed stay duration of " + bundle.getAccommodationNights() + " nights.");
         }
         bundle.setNumberofLessons(bundle.getNumberofLessons() + lessons);
     }
