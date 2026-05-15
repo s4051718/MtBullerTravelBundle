@@ -16,7 +16,8 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         initPanel();
     }
 
-    private JButton btnShowAll;
+    private JButton btnCreateNewBundle;
+    private JButton btnAddToBundle;
     private JTextArea txtMessage;
     private JComboBox<Customer> customerJComboBox;
     private JComboBox<Accommodation> accommodationJComboBox;
@@ -28,8 +29,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
     private JComboBox<TravelBundle> bundleSelectJComboBox;
     private JTextField liftPassAddJTextField;
     private JTextField lessonsAddJTextField;
-    private JButton btnAddLiftPass;
-    private JButton btnAddLessons;
+    private JButton btnUpdateBundle;
 
     @Override
     protected JPanel buildMainPanel() {
@@ -40,10 +40,14 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
         pnlButtons.setBackground(new Color(253, 214, 166));
 
-        btnShowAll = new JButton("Show All");
-        btnShowAll.addActionListener(this);
+        btnCreateNewBundle = new JButton("Create New Bundle");
+        btnCreateNewBundle.addActionListener(this);
 
-        pnlButtons.add(btnShowAll);
+        btnAddToBundle = new JButton("Add to Bundle");
+        btnAddToBundle.addActionListener(this);
+
+        pnlButtons.add(btnCreateNewBundle);
+        pnlButtons.add(btnAddToBundle);
 
         txtMessage = new JTextArea(5, 20);
         txtMessage.setEditable(false);
@@ -51,17 +55,44 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 
         JPanel newBundlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
+        JPanel addToBundlePanel = new JPanel();
+        addToBundlePanel.setLayout(new BoxLayout(addToBundlePanel, BoxLayout.Y_AXIS));
+
+        panel.add(pnlButtons, BorderLayout.NORTH);
+        panel.add(scrollPane,  BorderLayout.CENTER);
+        panel.add(newBundlePanel, BorderLayout.SOUTH);
+        panel.add(addToBundlePanel, BorderLayout.EAST);
+
+        txtMessage.setText(resort.getAllBundlesAsString());
+        return panel;
+    }
+
+    private void showCreateNewBundleDialog() {
+        JDialog dialog = new JDialog(this, "Create New Bundle", true);
+        dialog.setSize(300, 350);
+        dialog.setLocationRelativeTo(this);
+        dialog.setLayout(new BorderLayout());
+
+        JPanel newBundlePanel = new JPanel();
+        newBundlePanel.setLayout(new BoxLayout(newBundlePanel, BoxLayout.Y_AXIS));
+
         JLabel customerJLabel = new JLabel("Customer:");
+        customerJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         customerJComboBox = new JComboBox<Customer>();
+        customerJComboBox.setMaximumSize(new Dimension(200, 25));
+        customerJComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         for (Customer c : resort.getCustomers()) {
             customerJComboBox.addItem(c);
         }
         customerJComboBox.addActionListener(this);
 
         JLabel accommodationJLabel = new JLabel("Accommodation:");
+        accommodationJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         accommodationJComboBox = new JComboBox<Accommodation>();
+        accommodationJComboBox.setMaximumSize(new Dimension(200, 25));
+        accommodationJComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         for (Accommodation a : resort.getAccommodations()) {
             if (a.isAvailable()) {
                 accommodationJComboBox.addItem(a);
@@ -70,26 +101,55 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         accommodationJComboBox.addActionListener(this);
 
         JLabel dateJLabel = new JLabel("Date:");
+        dateJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         startDateJTextField = new JTextField(7);
+        startDateJTextField.setMaximumSize(new Dimension(100, 25));
+        startDateJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
         startDateJTextField.addActionListener(this);
 
         JLabel accommodationNightsJLabel = new JLabel("Accommodation Nights:");
+        accommodationNightsJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         nightsJTextField = new JTextField(6);
+        nightsJTextField.setMaximumSize(new Dimension(100, 25));
+        nightsJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
         nightsJTextField.addActionListener(this);
 
         JLabel liftPassDaysJLabel = new JLabel("Lift Pass Days:");
+        liftPassDaysJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         liftPassDaysJTextField = new JTextField(4);
+        liftPassDaysJTextField.setMaximumSize(new Dimension(100, 25));
+        liftPassDaysJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
         liftPassDaysJTextField.addActionListener(this);
 
         JLabel lessonsJLabel = new JLabel("Lessons:");
+        lessonsJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         lessonsJTextField = new JTextField(4);
+        lessonsJTextField.setMaximumSize(new Dimension(100, 25));
+        lessonsJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         btnCreateBundle = new JButton("Create Bundle");
-        btnCreateBundle.addActionListener(this);
+        btnCreateBundle.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btnCreateBundle.addActionListener(e -> {
+            try {
+                Customer customer = (Customer) customerJComboBox.getSelectedItem();
+                Accommodation accommodation = (Accommodation) accommodationJComboBox.getSelectedItem();
+                LocalDate startDate = resort.parseIssueDate(startDateJTextField.getText());
+                int nights = Integer.parseInt(nightsJTextField.getText());
+                int liftPassDays = Integer.parseInt(liftPassDaysJTextField.getText());
+                int lessons = Integer.parseInt(lessonsJTextField.getText());
+                resort.createBundleFromGUI(customer, accommodation, startDate, nights, liftPassDays, lessons);
+                txtMessage.setText(resort.getAllBundlesAsString());
+                dialog.dispose();
+            } catch (MtBullerException ex) {
+                JOptionPane.showMessageDialog(dialog, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(dialog, "Invalid input. Please check all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
 
         newBundlePanel.add(customerJLabel);
         newBundlePanel.add(customerJComboBox);
@@ -105,11 +165,18 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         newBundlePanel.add(lessonsJTextField);
         newBundlePanel.add(btnCreateBundle);
 
+        dialog.add(newBundlePanel, BorderLayout.WEST);
+        dialog.setVisible(true);
+    }
+
+    public void showAddToBundleDialog() {
+        JDialog dialog = new JDialog(this, "Add to Bundle", true);
+        dialog.setSize(300, 300);
+        dialog.setLocationRelativeTo(this);
+        dialog.setLayout(new BorderLayout());
+
         JPanel addToBundlePanel = new JPanel();
         addToBundlePanel.setLayout(new BoxLayout(addToBundlePanel, BoxLayout.Y_AXIS));
-
-        JLabel addToBundleJLabel = new JLabel("Add to Bundle:");
-        addToBundleJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel bundleSelectJLabel = new JLabel("Bundle:");
         bundleSelectJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -138,81 +205,53 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         lessonsAddJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
         lessonsAddJTextField.addActionListener(this);
 
-        btnAddLiftPass = new JButton("Add Lift Pass");
-        btnAddLiftPass.setAlignmentX(Component.LEFT_ALIGNMENT);
-        btnAddLiftPass.addActionListener(this);
+        btnUpdateBundle = new JButton("Update Bundle");
+        btnUpdateBundle.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btnUpdateBundle.addActionListener(e -> {
+            try {
+                TravelBundle selected = (TravelBundle) bundleSelectJComboBox.getSelectedItem();
 
-        btnAddLessons = new JButton("Add Lessons");
-        btnAddLessons.setAlignmentX(Component.LEFT_ALIGNMENT);
-        btnAddLessons.addActionListener(this);
+                String liftPassText = liftPassAddJTextField.getText().trim();
+                if (!liftPassText.isEmpty()) {
+                    int days = Integer.parseInt(liftPassText);
+                    resort.addLiftPassToBundle(selected, days);
+                }
 
-        addToBundlePanel.add(addToBundleJLabel);
+                String lessonsText = lessonsAddJTextField.getText().trim();
+                if (!lessonsText.isEmpty()) {
+                    int lessons = Integer.parseInt(lessonsText);
+                    resort.addLessonsToBundle(selected, lessons);
+                }
+
+                txtMessage.setText(resort.getAllBundlesAsString());
+                refreshBundleComboBox();
+                dialog.dispose();
+
+            } catch (MtBullerException ex) {
+                JOptionPane.showMessageDialog(dialog, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(dialog, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
         addToBundlePanel.add(bundleSelectJLabel);
         addToBundlePanel.add(bundleSelectJComboBox);
         addToBundlePanel.add(liftPassAddJLabel);
         addToBundlePanel.add(liftPassAddJTextField);
         addToBundlePanel.add(lessonsAddJLabel);
         addToBundlePanel.add(lessonsAddJTextField);
-        addToBundlePanel.add(btnAddLiftPass);
-        addToBundlePanel.add(btnAddLessons);
+        addToBundlePanel.add(btnUpdateBundle);
 
-        panel.add(pnlButtons, BorderLayout.NORTH);
-        panel.add(scrollPane,  BorderLayout.CENTER);
-        panel.add(newBundlePanel, BorderLayout.SOUTH);
-        panel.add(addToBundlePanel, BorderLayout.EAST);
-
-
-        return panel;
+        dialog.add(addToBundlePanel, BorderLayout.CENTER);
+        dialog.setVisible(true);
     }
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		if(ae.getSource() == btnShowAll) {
-			txtMessage.setText(resort.getAllBundlesAsString());
-        } else if (ae.getSource() == btnCreateBundle) {
-            try {
-                Customer customer = (Customer) customerJComboBox.getSelectedItem();
-                Accommodation accommodation = (Accommodation) accommodationJComboBox.getSelectedItem();
-
-                LocalDate startDate = resort.parseIssueDate(startDateJTextField.getText());
-                int nights = Integer.parseInt(nightsJTextField.getText());
-                int liftPassDays = Integer.parseInt(liftPassDaysJTextField.getText());
-                int lessons = Integer.parseInt(lessonsJTextField.getText());
-
-                resort.createBundleFromGUI(customer, accommodation, startDate, nights, liftPassDays, lessons);
-                txtMessage.setText(resort.getAllBundlesAsString());
-                refreshBundleComboBox();
-                refreshAccommodationComboBox();
-            } catch (MtBullerException e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Invalid input. Please check all fields.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else if (ae.getSource() == btnAddLiftPass) {
-            try {
-                TravelBundle selected = (TravelBundle) bundleSelectJComboBox.getSelectedItem();
-                int days = Integer.parseInt(liftPassAddJTextField.getText());
-                resort.addLiftPassToBundle(selected, days);
-                txtMessage.setText(resort.getAllBundlesAsString());
-                refreshBundleComboBox();
-            } catch (MtBullerException e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-        } else if (ae.getSource() == btnAddLessons) {
-            try {
-                TravelBundle selected = (TravelBundle) bundleSelectJComboBox.getSelectedItem();
-                int lessons = Integer.parseInt(lessonsAddJTextField.getText());
-                resort.addLessonsToBundle(selected, lessons);
-                txtMessage.setText(resort.getAllBundlesAsString());
-                refreshBundleComboBox();
-            } catch (MtBullerException e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+		if (ae.getSource() == btnCreateNewBundle) {
+            showCreateNewBundleDialog();
+        } else if (ae.getSource() == btnAddToBundle) {
+            showAddToBundleDialog();
         }
 	}
 
@@ -229,12 +268,12 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         }
     }
 
-    private void refreshAccommodationComboBox() {
-        accommodationJComboBox.removeAllItems();
-        for (Accommodation a : resort.getAccommodations()) {
-            if (a.isAvailable()) {
-                accommodationJComboBox.addItem(a);
-            }
-        }
-    }
+    // private void refreshAccommodationComboBox() {
+    //     accommodationJComboBox.removeAllItems();
+    //     for (Accommodation a : resort.getAccommodations()) {
+    //         if (a.isAvailable()) {
+    //             accommodationJComboBox.addItem(a);
+    //         }
+    //     }
+    // }
 }

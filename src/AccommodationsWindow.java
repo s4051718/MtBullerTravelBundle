@@ -76,6 +76,7 @@ public class AccommodationsWindow extends ApplicationWindow implements ActionLis
         panel.add(filterJPanel, BorderLayout.NORTH);
         panel.add(scrollPane,  BorderLayout.CENTER);
 
+        txtMessage.setText(resort.getFilteredAccommodationsAsString("All", "All"));
         return panel;
     }
 
