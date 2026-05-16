@@ -26,6 +26,8 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
     @Override
     protected JPanel buildMainPanel() {
         JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(new Color(178, 193, 162));
+        panel.setOpaque(true);
 
         JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
         pnlButtons.setBackground(new Color(178, 193, 162));
@@ -43,22 +45,26 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
         panel.add(scrollPane,  BorderLayout.CENTER);
 
         txtMessage.setText(resort.getAllCustomersAsString());
+        txtMessage.setCaretPosition(0);
         return panel;
     }
 
     private void showAddCustomerDialog() {
         JDialog dialog = new JDialog(this, "Add New Customer", true);
-        dialog.setSize(300, 200);
+        dialog.setSize(300, 250);
         dialog.setLocationRelativeTo(this);
         dialog.setLayout(new BorderLayout());
 
         JPanel newCustomerPanel = new JPanel();
         newCustomerPanel.setLayout(new BoxLayout(newCustomerPanel, BoxLayout.Y_AXIS));
+        newCustomerPanel.setBorder(BorderFactory.createEmptyBorder(12, 16, 12, 16));
+        newCustomerPanel.setBackground(new Color(178, 193, 162));
+        newCustomerPanel.setOpaque(true);
 
         nameJLabel = new JLabel("Name:");
 
         nameJTextField = new JTextField();
-        nameJTextField.setMaximumSize(new Dimension(240, 25));
+        nameJTextField.setMaximumSize(new Dimension(300, 25));
 
         levelJLabel = new JLabel("Ski Level:");
 
@@ -98,16 +104,23 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
             if (confirm == JOptionPane.OK_OPTION) {
                 resort.addCustomerFromGUI(name, level);
                 txtMessage.setText(resort.getAllCustomersAsString());
+                txtMessage.setCaretPosition(0);
                 dialog.dispose();
             }
         });
 
+        beginnerJRadioButton.setOpaque(false);
+        intermediateJRadioButton.setOpaque(false);
+        expertJRadioButton.setOpaque(false);
+
         newCustomerPanel.add(nameJLabel);
         newCustomerPanel.add(nameJTextField);
+        newCustomerPanel.add(Box.createVerticalStrut(10));
         newCustomerPanel.add(levelJLabel);
         newCustomerPanel.add(beginnerJRadioButton);
         newCustomerPanel.add(intermediateJRadioButton);
         newCustomerPanel.add(expertJRadioButton);
+        newCustomerPanel.add(Box.createVerticalStrut(10));
         newCustomerPanel.add(addCustomerJButton);
 
         dialog.add(newCustomerPanel, BorderLayout.CENTER);

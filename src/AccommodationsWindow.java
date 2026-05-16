@@ -26,6 +26,8 @@ public class AccommodationsWindow extends ApplicationWindow implements ActionLis
     @Override
     protected JPanel buildMainPanel() {
         JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(new Color(180, 217, 239));
+        panel.setOpaque(true);
 
         JPanel filterJPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         filterJPanel.setBackground(new Color(180, 217, 239));
@@ -77,6 +79,7 @@ public class AccommodationsWindow extends ApplicationWindow implements ActionLis
         panel.add(scrollPane,  BorderLayout.CENTER);
 
         txtMessage.setText(resort.getFilteredAccommodationsAsString("All", "All"));
+        txtMessage.setCaretPosition(0);
         return panel;
     }
 
@@ -98,6 +101,7 @@ public class AccommodationsWindow extends ApplicationWindow implements ActionLis
             accommodationStatusJComboBox.setSelectedIndex(0);
             accommodationPriceJTextField.setText("");
             txtMessage.setText(resort.getAllAccommodationsAsString());
+            txtMessage.setCaretPosition(0);
         }
     }
 

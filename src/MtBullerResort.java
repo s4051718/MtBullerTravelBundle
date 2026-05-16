@@ -559,10 +559,10 @@ public class MtBullerResort {
             boolean matchesStatus = status.equals("All") || room.isAvailable();
             if (matchesType && matchesStatus) {
                 String roomStatus = room.isAvailable() ? "Available" : "Booked";
-                sb.append("ID:     " + room.getId() + "\n"
-                    + "Type:   " + room.getType() + "\n"
-                    + "Price:  $" + room.getPrice() + "/night\n"
-                    + "Status: " + roomStatus + "\n"
+                sb.append("ID:         " + room.getId() + "\n"
+                    + "Type:    " + room.getType() + "\n"
+                    + "Price:   $" + room.getPrice() + "/night\n"
+                    + "Status:  " + roomStatus + "\n"
                     + "------------------------------------------------------------\n");
             }
         }
@@ -572,9 +572,9 @@ public class MtBullerResort {
     public String getAllCustomersAsString() {
         StringBuilder sb = new StringBuilder();
         for (Customer customer : customers) {
-            sb.append("ID:        " + customer.getId() + "\n"
-                + "Name:      " + customer.getName() + "\n"
-                + "Ski Level: " + customer.getLevel() + "\n"
+            sb.append("ID:             " + customer.getId() + "\n"
+                + "Name:       " + customer.getName() + "\n"
+                + "Ski Level:  " + customer.getLevel() + "\n"
                 + "------------------------------------------------------------\n");
         }
         return sb.toString();
@@ -591,11 +591,12 @@ public class MtBullerResort {
     public String getAllBundlesAsString() {
         StringBuilder sb = new StringBuilder();
         for (TravelBundle bundle : travelBundles) {
-            sb.append("Customer:    " + bundle.getCustomer() + "\n"
-                + "Stay:        " + bundle.getAccommodation() + " x" + bundle.getAccommodationNights() + " nights from " + bundle.getStartDate() + "\n"
-                + "Lift Pass:   " + bundle.getLiftPass() + " (" + bundle.getLiftPassDays() + " days)" + "\n"
-                + "Lessons:     " + bundle.getNumberofLessons() + "\n"
-                + "Total Price: $" + bundle.getPrice() + "\n"
+            sb.append("Customer:     " + bundle.getCustomer() + "\n"
+                + "Stay:               " + bundle.getAccommodation() + "\n"
+                + "                        "+ bundle.getAccommodationNights() + " nights from " + bundle.getStartDate() + "\n"
+                + "Lift Pass:        " + bundle.getLiftPass() + " (" + bundle.getLiftPassDays() + " days)" + "\n"
+                + "Lessons:        " + bundle.getNumberofLessons() + "\n"
+                + "Total Price:   $" + bundle.getPrice() + "\n"
                 + "------------------------------------------------------------\n");
         }
         return sb.toString();

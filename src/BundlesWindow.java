@@ -35,6 +35,8 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
     protected JPanel buildMainPanel() {
 
         JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(new Color(253, 214, 166));
+        panel.setOpaque(true);
         setSize(1300, 600);
 
         JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -64,17 +66,20 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         panel.add(addToBundlePanel, BorderLayout.EAST);
 
         txtMessage.setText(resort.getAllBundlesAsString());
+        txtMessage.setCaretPosition(0);
         return panel;
     }
 
     private void showCreateNewBundleDialog() {
         JDialog dialog = new JDialog(this, "Create New Bundle", true);
-        dialog.setSize(300, 350);
+        dialog.setSize(300, 400);
         dialog.setLocationRelativeTo(this);
         dialog.setLayout(new BorderLayout());
 
         JPanel newBundlePanel = new JPanel();
         newBundlePanel.setLayout(new BoxLayout(newBundlePanel, BoxLayout.Y_AXIS));
+        newBundlePanel.setBorder(BorderFactory.createEmptyBorder(12, 16, 12, 16));
+        newBundlePanel.setBackground(new Color(253, 214, 166));
 
         JLabel customerJLabel = new JLabel("Customer:");
         customerJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -143,6 +148,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
                 int lessons = Integer.parseInt(lessonsJTextField.getText());
                 resort.createBundleFromGUI(customer, accommodation, startDate, nights, liftPassDays, lessons);
                 txtMessage.setText(resort.getAllBundlesAsString());
+                txtMessage.setCaretPosition(0);
                 dialog.dispose();
             } catch (MtBullerException ex) {
                 JOptionPane.showMessageDialog(dialog, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -153,19 +159,25 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 
         newBundlePanel.add(customerJLabel);
         newBundlePanel.add(customerJComboBox);
+        newBundlePanel.add(Box.createVerticalStrut(10));
         newBundlePanel.add(accommodationJLabel);
         newBundlePanel.add(accommodationJComboBox);
+        newBundlePanel.add(Box.createVerticalStrut(10));
         newBundlePanel.add(dateJLabel);
         newBundlePanel.add(startDateJTextField);
+        newBundlePanel.add(Box.createVerticalStrut(10));
         newBundlePanel.add(accommodationNightsJLabel);
         newBundlePanel.add(nightsJTextField);
+        newBundlePanel.add(Box.createVerticalStrut(10));
         newBundlePanel.add(liftPassDaysJLabel);
         newBundlePanel.add(liftPassDaysJTextField);
+        newBundlePanel.add(Box.createVerticalStrut(10));
         newBundlePanel.add(lessonsJLabel);
         newBundlePanel.add(lessonsJTextField);
+        newBundlePanel.add(Box.createVerticalStrut(10));
         newBundlePanel.add(btnCreateBundle);
 
-        dialog.add(newBundlePanel, BorderLayout.WEST);
+        dialog.add(newBundlePanel, BorderLayout.CENTER);
         dialog.setVisible(true);
     }
 
@@ -177,6 +189,8 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 
         JPanel addToBundlePanel = new JPanel();
         addToBundlePanel.setLayout(new BoxLayout(addToBundlePanel, BoxLayout.Y_AXIS));
+        addToBundlePanel.setBorder(BorderFactory.createEmptyBorder(12, 16, 12, 16));
+        addToBundlePanel.setBackground(new Color(253, 214, 166));
 
         JLabel bundleSelectJLabel = new JLabel("Bundle:");
         bundleSelectJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -225,6 +239,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 
                 txtMessage.setText(resort.getAllBundlesAsString());
                 refreshBundleComboBox();
+                txtMessage.setCaretPosition(0);
                 dialog.dispose();
 
             } catch (MtBullerException ex) {
@@ -236,10 +251,13 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 
         addToBundlePanel.add(bundleSelectJLabel);
         addToBundlePanel.add(bundleSelectJComboBox);
+        addToBundlePanel.add(Box.createVerticalStrut(10));
         addToBundlePanel.add(liftPassAddJLabel);
         addToBundlePanel.add(liftPassAddJTextField);
+        addToBundlePanel.add(Box.createVerticalStrut(10));
         addToBundlePanel.add(lessonsAddJLabel);
         addToBundlePanel.add(lessonsAddJTextField);
+        addToBundlePanel.add(Box.createVerticalStrut(10));
         addToBundlePanel.add(btnUpdateBundle);
 
         dialog.add(addToBundlePanel, BorderLayout.CENTER);
