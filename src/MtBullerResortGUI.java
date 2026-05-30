@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MtBullerResortGUI extends JFrame {
 
@@ -8,7 +10,15 @@ public class MtBullerResortGUI extends JFrame {
 
     public MtBullerResortGUI() {
         super("Mt Buller Resort Manager");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                resort.writeBundleToFile();
+                resort.writeCustomersToFile();
+                resort.writeAccommodationsToFile();
+                System.exit(0);
+            }
+        });
         setSize(800, 600);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
