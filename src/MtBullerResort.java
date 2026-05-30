@@ -652,10 +652,13 @@ public class MtBullerResort {
         int totalDays = bundle.getLiftPassDays() + days;
 
         LiftPassType passType;
-        if (totalDays > 30) {
-            throw new MtBullerException("Total lift pass days cannot exceed 30.");
-        } else if (days < 0) {
+        if (days < 0) {
             throw new MtBullerException("Lift pass days cannot be negative.");
+        } else if (totalDays > 30) {
+            throw new MtBullerException("Total lift pass days cannot exceed 30.");
+        } else if (totalDays > bundle.getAccommodationNights()) {
+            throw new MtBullerException("Lift pass days cannot exceed stay duration of "
+                + bundle.getAccommodationNights() + " nights.");
         } else if (totalDays == 0) {
             passType = LiftPassType.NONE;
         } else if (totalDays >= 30) {
