@@ -552,12 +552,13 @@ public class MtBullerResort {
     //     return sb.toString();
     // }
 
-    public String getFilteredAccommodationsAsString(String type, String status) {
+    public String getFilteredAccommodationsAsString(String type, String status, double maxPrice) {
         StringBuilder sb = new StringBuilder();
         for (Accommodation room : accommodations) {
             boolean matchesType = type.equals("All") || room.getType().equals(type);
             boolean matchesStatus = status.equals("All") || room.isAvailable();
-            if (matchesType && matchesStatus) {
+            boolean matchesPrice = maxPrice <= 0 || room.getPrice() <= maxPrice;
+            if (matchesType && matchesStatus && matchesPrice) {
                 String roomStatus = room.isAvailable() ? "Available" : "Booked";
                 sb.append("ID:         " + room.getId() + "\n"
                     + "Type:    " + room.getType() + "\n"

@@ -78,7 +78,7 @@ public class AccommodationsWindow extends ApplicationWindow implements ActionLis
         panel.add(filterJPanel, BorderLayout.NORTH);
         panel.add(scrollPane,  BorderLayout.CENTER);
 
-        txtMessage.setText(resort.getFilteredAccommodationsAsString("All", "All"));
+        txtMessage.setText(resort.getFilteredAccommodationsAsString("All", "All", 0));
         txtMessage.setCaretPosition(0);
         return panel;
     }
@@ -88,14 +88,22 @@ public class AccommodationsWindow extends ApplicationWindow implements ActionLis
         if (e.getSource() == accommodationTypeJComboBox || e.getSource() == accommodationStatusJComboBox) {
             String type = (String) accommodationTypeJComboBox.getSelectedItem();
             String status = (String) accommodationStatusJComboBox.getSelectedItem();
-            txtMessage.setText(resort.getFilteredAccommodationsAsString(type, status));
+            txtMessage.setText(resort.getFilteredAccommodationsAsString(type, status, 0));
         } else if (e.getSource() == btnApply) {
-            /*
-            Price filter logic (Innovative feature #1)
-            */
             String type = (String) accommodationTypeJComboBox.getSelectedItem();
             String status = (String) accommodationStatusJComboBox.getSelectedItem();
-            txtMessage.setText(resort.getFilteredAccommodationsAsString(type, status));
+            double maxPrice = 0;
+            try {
+                String priceText = accommodationPriceJTextField.getText().trim();
+                if (!priceText.isEmpty()) {
+                    maxPrice = Double.parseDouble(priceText);
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid price. Please enter a number.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            txtMessage.setText(resort.getFilteredAccommodationsAsString(type, status, maxPrice));
+            txtMessage.setCaretPosition(0);
         } else if (e.getSource() == btnReset) {
             accommodationTypeJComboBox.setSelectedIndex(0);
             accommodationStatusJComboBox.setSelectedIndex(0);
