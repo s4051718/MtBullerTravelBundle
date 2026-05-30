@@ -111,7 +111,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         startDateJTextField = new JTextField(7);
         startDateJTextField.setMaximumSize(new Dimension(100, 25));
         startDateJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        startDateJTextField.addActionListener(this);
+        startDateJTextField.setToolTipText("Format: dd/MM/yyyy");
 
         JLabel accommodationNightsJLabel = new JLabel("Accommodation Nights:");
         accommodationNightsJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -119,7 +119,6 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         nightsJTextField = new JTextField(6);
         nightsJTextField.setMaximumSize(new Dimension(100, 25));
         nightsJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        nightsJTextField.addActionListener(this);
 
         JLabel liftPassDaysJLabel = new JLabel("Lift Pass Days:");
         liftPassDaysJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -127,7 +126,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         liftPassDaysJTextField = new JTextField(4);
         liftPassDaysJTextField.setMaximumSize(new Dimension(100, 25));
         liftPassDaysJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        liftPassDaysJTextField.addActionListener(this);
+        liftPassDaysJTextField.setToolTipText("Enter 0 for no lift pass");
 
         JLabel lessonsJLabel = new JLabel("Lessons:");
         lessonsJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -135,6 +134,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         lessonsJTextField = new JTextField(4);
         lessonsJTextField.setMaximumSize(new Dimension(100, 25));
         lessonsJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lessonsJTextField.setToolTipText("Enter 0 for no lessons");
 
         btnCreateBundle = new JButton("Create Bundle");
         btnCreateBundle.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -209,7 +209,6 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         liftPassAddJTextField = new JTextField(4);
         liftPassAddJTextField.setMaximumSize(new Dimension(100, 25));
         liftPassAddJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        liftPassAddJTextField.addActionListener(this);
 
         JLabel lessonsAddJLabel = new JLabel("Lessons:");
         lessonsAddJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -217,7 +216,6 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         lessonsAddJTextField = new JTextField(4);
         lessonsAddJTextField.setMaximumSize(new Dimension(100, 25));
         lessonsAddJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        lessonsAddJTextField.addActionListener(this);
 
         btnUpdateBundle = new JButton("Update Bundle");
         btnUpdateBundle.setAlignmentX(Component.LEFT_ALIGNMENT);
