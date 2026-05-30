@@ -49,7 +49,7 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
         return panel;
     }
 
-    private void showAddCustomerDialog() {
+    public void showAddCustomerDialog() {
         JDialog dialog = new JDialog(this, "Add New Customer", true);
         dialog.setSize(300, 250);
         dialog.setLocationRelativeTo(this);

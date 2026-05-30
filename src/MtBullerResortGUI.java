@@ -25,10 +25,10 @@ public class MtBullerResortGUI extends JFrame {
 
         resort = new MtBullerResort();
 
-        HomeWindow homeWindow = new HomeWindow(resort);
         AccommodationsWindow accWindow = new AccommodationsWindow(resort);
         CustomersWindow custWindow = new CustomersWindow(resort);
         BundlesWindow bundleWindow = new BundlesWindow(resort);
+        HomeWindow homeWindow = new HomeWindow(resort, custWindow, bundleWindow);
 
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Home", homeWindow.getMainPanel());

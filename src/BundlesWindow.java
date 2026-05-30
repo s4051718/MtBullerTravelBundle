@@ -70,7 +70,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         return panel;
     }
 
-    private void showCreateNewBundleDialog() {
+    public void showCreateNewBundleDialog() {
         JDialog dialog = new JDialog(this, "Create New Bundle", true);
         dialog.setSize(300, 400);
         dialog.setLocationRelativeTo(this);
@@ -181,7 +181,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         dialog.setVisible(true);
     }
 
-    public void showAddToBundleDialog() {
+    private void showAddToBundleDialog() {
         JDialog dialog = new JDialog(this, "Add to Bundle", true);
         dialog.setSize(300, 300);
         dialog.setLocationRelativeTo(this);
