@@ -3,12 +3,12 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class MtBullerResortGUI extends JFrame {
+public class ResortGUI extends JFrame {
 
     private MtBullerResort resort;
     private JTabbedPane tabbedPane;
 
-    public MtBullerResortGUI() {
+    public ResortGUI() {
         super("Mt Buller Resort Manager");
         addWindowListener(new WindowAdapter() {
             @Override
@@ -46,6 +46,6 @@ public class MtBullerResortGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new MtBullerResortGUI().setVisible(true));
+        SwingUtilities.invokeLater(() -> new ResortGUI().setVisible(true));
     }
 }
