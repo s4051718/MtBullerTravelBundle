@@ -72,7 +72,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 
     public void showCreateNewBundleDialog() {
         JDialog dialog = new JDialog(this, "Create New Bundle", true);
-        dialog.setSize(300, 400);
+        dialog.setSize(300, 450);
         dialog.setLocationRelativeTo(this);
         dialog.setLayout(new BorderLayout());
 
@@ -111,7 +111,11 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         startDateJTextField = new JTextField(7);
         startDateJTextField.setMaximumSize(new Dimension(100, 25));
         startDateJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        startDateJTextField.setToolTipText("Format: dd/MM/yyyy");
+
+        JLabel dateHintJLabel = new JLabel("Format: dd/MM/yyyy");
+        dateHintJLabel.setFont(new Font("Arial", Font.ITALIC, 10));
+        dateHintJLabel.setForeground(Color.GRAY);
+        dateHintJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel accommodationNightsJLabel = new JLabel("Accommodation Nights:");
         accommodationNightsJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -120,13 +124,22 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         nightsJTextField.setMaximumSize(new Dimension(100, 25));
         nightsJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+        JLabel nightsHintJLabel = new JLabel("Enter a number (max 30)");
+        nightsHintJLabel.setFont(new Font("Arial", Font.ITALIC, 10));
+        nightsHintJLabel.setForeground(Color.GRAY);
+        nightsHintJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         JLabel liftPassDaysJLabel = new JLabel("Lift Pass Days:");
         liftPassDaysJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         liftPassDaysJTextField = new JTextField(4);
         liftPassDaysJTextField.setMaximumSize(new Dimension(100, 25));
         liftPassDaysJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        liftPassDaysJTextField.setToolTipText("Enter 0 for no lift pass");
+
+        JLabel liftPassHintJLabel = new JLabel("Enter a number (0 for no lift pass)");
+        liftPassHintJLabel.setFont(new Font("Arial", Font.ITALIC, 10));
+        liftPassHintJLabel.setForeground(Color.GRAY);
+        liftPassHintJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel lessonsJLabel = new JLabel("Lessons:");
         lessonsJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -134,7 +147,11 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         lessonsJTextField = new JTextField(4);
         lessonsJTextField.setMaximumSize(new Dimension(100, 25));
         lessonsJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        lessonsJTextField.setToolTipText("Enter 0 for no lessons");
+
+        JLabel lessonsHintJLabel = new JLabel("Enter a number (0 for no lessons)");
+        lessonsHintJLabel.setFont(new Font("Arial", Font.ITALIC, 10));
+        lessonsHintJLabel.setForeground(Color.GRAY);
+        lessonsHintJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         btnCreateBundle = new JButton("Create Bundle");
         btnCreateBundle.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -165,15 +182,19 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         newBundlePanel.add(Box.createVerticalStrut(10));
         newBundlePanel.add(dateJLabel);
         newBundlePanel.add(startDateJTextField);
+        newBundlePanel.add(dateHintJLabel);
         newBundlePanel.add(Box.createVerticalStrut(10));
         newBundlePanel.add(accommodationNightsJLabel);
         newBundlePanel.add(nightsJTextField);
+        newBundlePanel.add(nightsHintJLabel);
         newBundlePanel.add(Box.createVerticalStrut(10));
         newBundlePanel.add(liftPassDaysJLabel);
         newBundlePanel.add(liftPassDaysJTextField);
+        newBundlePanel.add(liftPassHintJLabel);
         newBundlePanel.add(Box.createVerticalStrut(10));
         newBundlePanel.add(lessonsJLabel);
         newBundlePanel.add(lessonsJTextField);
+        newBundlePanel.add(lessonsHintJLabel);
         newBundlePanel.add(Box.createVerticalStrut(10));
         newBundlePanel.add(btnCreateBundle);
 
@@ -210,12 +231,22 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         liftPassAddJTextField.setMaximumSize(new Dimension(100, 25));
         liftPassAddJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+        JLabel liftPassAddHintJLabel = new JLabel("Enter a number");
+        liftPassAddHintJLabel.setFont(new Font("Arial", Font.ITALIC, 10));
+        liftPassAddHintJLabel.setForeground(Color.GRAY);
+        liftPassAddHintJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         JLabel lessonsAddJLabel = new JLabel("Lessons:");
         lessonsAddJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         lessonsAddJTextField = new JTextField(4);
         lessonsAddJTextField.setMaximumSize(new Dimension(100, 25));
         lessonsAddJTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel lessonsAddHintJLabel = new JLabel("Enter a number");
+        lessonsAddHintJLabel.setFont(new Font("Arial", Font.ITALIC, 10));
+        lessonsAddHintJLabel.setForeground(Color.GRAY);
+        lessonsAddHintJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         btnUpdateBundle = new JButton("Update Bundle");
         btnUpdateBundle.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -252,9 +283,11 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         addToBundlePanel.add(Box.createVerticalStrut(10));
         addToBundlePanel.add(liftPassAddJLabel);
         addToBundlePanel.add(liftPassAddJTextField);
+        addToBundlePanel.add(liftPassAddHintJLabel);
         addToBundlePanel.add(Box.createVerticalStrut(10));
         addToBundlePanel.add(lessonsAddJLabel);
         addToBundlePanel.add(lessonsAddJTextField);
+        addToBundlePanel.add(lessonsAddHintJLabel);
         addToBundlePanel.add(Box.createVerticalStrut(10));
         addToBundlePanel.add(btnUpdateBundle);
 
