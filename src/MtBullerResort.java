@@ -696,6 +696,18 @@ public class MtBullerResort {
         return travelBundles;
     }
 
+    public void deleteCustomer(Customer customer) {
+        customers.remove(customer);
+        writeCustomersToFile();
+    }
+
+    public void deleteBundle(TravelBundle bundle) {
+        bundle.getAccommodation().setAvailable(true);
+        travelBundles.remove(bundle);
+        writeBundleToFile();
+        writeAccommodationsToFile();
+    }
+
     public void loadAccommodationsFromFile() {
         Path path = Path.of("accommodations.ser");
 

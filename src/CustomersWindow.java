@@ -13,6 +13,7 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
     }
 
     private JButton btnCreateCustomer;
+    private JButton btnDeleteCustomer;
     private JTextArea txtMessage;
     private JLabel nameJLabel;
     private JTextField nameJTextField;
@@ -35,7 +36,11 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
         btnCreateCustomer = new JButton("Create a New Customer");
         btnCreateCustomer.addActionListener(this);
 
+        btnDeleteCustomer = new JButton("Delete Customer");
+        btnDeleteCustomer.addActionListener(this);
+
         pnlButtons.add(btnCreateCustomer);
+        pnlButtons.add(btnDeleteCustomer);
 
         txtMessage = new JTextArea(5, 20);
         txtMessage.setEditable(false);
@@ -127,10 +132,60 @@ public class CustomersWindow extends ApplicationWindow implements ActionListener
         dialog.setVisible(true);
     }
 
+    private void showDeleteCustomerDialog() {
+        JDialog dialog = new JDialog(this, "Delete Customer", true);
+        dialog.setSize(300, 160);
+        dialog.setLocationRelativeTo(this);
+        dialog.setLayout(new BorderLayout());
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(12, 16, 12, 16));
+        panel.setBackground(new Color(178, 193, 162));
+        panel.setOpaque(true);
+
+        JLabel selectJLabel = new JLabel("Select Customer:");
+        selectJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JComboBox<Customer> customerSelectJComboBox = new JComboBox<>();
+        customerSelectJComboBox.setMaximumSize(new Dimension(200, 25));
+        customerSelectJComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        for (Customer customer : resort.getCustomers()) {
+            customerSelectJComboBox.addItem(customer);
+        }
+
+        JButton btnConfirmDelete = new JButton("Delete");
+        btnConfirmDelete.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btnConfirmDelete.addActionListener(e -> {
+            Customer selected = (Customer) customerSelectJComboBox.getSelectedItem();
+            if (selected == null) return;
+            int confirm = JOptionPane.showConfirmDialog(dialog,
+                "Delete customer: " + selected.getName() + "?",
+                "Confirm",
+                JOptionPane.OK_CANCEL_OPTION);
+            if (confirm == JOptionPane.OK_OPTION) {
+                resort.deleteCustomer(selected);
+                txtMessage.setText(resort.getAllCustomersAsString());
+                txtMessage.setCaretPosition(0);
+                dialog.dispose();
+            }
+        });
+
+        panel.add(selectJLabel);
+        panel.add(customerSelectJComboBox);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(btnConfirmDelete);
+
+        dialog.add(panel, BorderLayout.CENTER);
+        dialog.setVisible(true);
+    }
+
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == btnCreateCustomer) {
             showAddCustomerDialog();
+        } else if (ae.getSource() == btnDeleteCustomer) {
+            showDeleteCustomerDialog();
         }
 	}
 

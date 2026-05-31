@@ -18,6 +18,7 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
 
     private JButton btnCreateNewBundle;
     private JButton btnAddToBundle;
+    private JButton btnDeleteBundle;
     private JTextArea txtMessage;
     private JComboBox<Customer> customerJComboBox;
     private JComboBox<Accommodation> accommodationJComboBox;
@@ -48,8 +49,12 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         btnAddToBundle = new JButton("Add to Bundle");
         btnAddToBundle.addActionListener(this);
 
+        btnDeleteBundle = new JButton("Delete Bundle");
+        btnDeleteBundle.addActionListener(this);
+
         pnlButtons.add(btnCreateNewBundle);
         pnlButtons.add(btnAddToBundle);
+        pnlButtons.add(btnDeleteBundle);
 
         txtMessage = new JTextArea(5, 20);
         txtMessage.setEditable(false);
@@ -295,12 +300,62 @@ public class BundlesWindow extends ApplicationWindow implements ActionListener {
         dialog.setVisible(true);
     }
 
+    private void showDeleteBundleDialog() {
+        JDialog dialog = new JDialog(this, "Delete Bundle", true);
+        dialog.setSize(300, 160);
+        dialog.setLocationRelativeTo(this);
+        dialog.setLayout(new BorderLayout());
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(12, 16, 12, 16));
+        panel.setBackground(new Color(253, 214, 166));
+        panel.setOpaque(true);
+
+        JLabel selectJLabel = new JLabel("Select Bundle:");
+        selectJLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JComboBox<TravelBundle> bundleDeleteJComboBox = new JComboBox<>();
+        bundleDeleteJComboBox.setMaximumSize(new Dimension(200, 25));
+        bundleDeleteJComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        for (TravelBundle bundle : resort.getBundles()) {
+            bundleDeleteJComboBox.addItem(bundle);
+        }
+
+        JButton btnConfirmDelete = new JButton("Delete");
+        btnConfirmDelete.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btnConfirmDelete.addActionListener(e -> {
+            TravelBundle selected = (TravelBundle) bundleDeleteJComboBox.getSelectedItem();
+            if (selected == null) return;
+            int confirm = JOptionPane.showConfirmDialog(dialog,
+                "Delete bundle for: " + selected.getCustomer().getName() + "?",
+                "Confirm",
+                JOptionPane.OK_CANCEL_OPTION);
+            if (confirm == JOptionPane.OK_OPTION) {
+                resort.deleteBundle(selected);
+                txtMessage.setText(resort.getAllBundlesAsString());
+                txtMessage.setCaretPosition(0);
+                dialog.dispose();
+            }
+        });
+
+        panel.add(selectJLabel);
+        panel.add(bundleDeleteJComboBox);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(btnConfirmDelete);
+
+        dialog.add(panel, BorderLayout.CENTER);
+        dialog.setVisible(true);
+    }
+
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == btnCreateNewBundle) {
             showCreateNewBundleDialog();
         } else if (ae.getSource() == btnAddToBundle) {
             showAddToBundleDialog();
+        } else if (ae.getSource() == btnDeleteBundle) {
+            showDeleteBundleDialog();
         }
 	}
 
