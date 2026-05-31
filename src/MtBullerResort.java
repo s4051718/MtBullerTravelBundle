@@ -1,3 +1,8 @@
+import accommodation.Accommodation;
+import accommodation.Apartment;
+import accommodation.HotelRoom;
+import accommodation.LodgeRoom;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -11,13 +16,7 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.io.IOException;
 
-import accommodation.Accommodation;
-import accommodation.Apartment;
-import accommodation.HotelRoom;
-import accommodation.LodgeRoom;
-
 public class MtBullerResort {
-
     Scanner scanner = new Scanner(System.in);
 
     private ArrayList<Customer> customers = new ArrayList<>();
@@ -604,7 +603,6 @@ public class MtBullerResort {
     }
 
     public void createBundleFromGUI(Customer customer, Accommodation accommodation, LocalDate startDate, int nights, int liftPassDays, int lessons) throws MtBullerException {
-
         if (startDate.isBefore(LocalDate.now())) {
             throw new MtBullerException("Booking date cannot be in the past.");
         }
@@ -751,7 +749,6 @@ public class MtBullerResort {
     }
 
     public void writeAccommodationsToFile() {
-
         Path path = Path.of("accommodations.ser");
 
         try (OutputStream out = Files.newOutputStream(path);

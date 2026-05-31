@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class ApplicationWindow extends JFrame {
-
     protected JPanel pnlMain;
 
     public ApplicationWindow(String title) {

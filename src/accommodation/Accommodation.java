@@ -3,7 +3,6 @@ package accommodation;
 import java.io.Serializable;
 
 public abstract class Accommodation implements Pricable, Serializable {
-
     String id;
     String type;
     double price;

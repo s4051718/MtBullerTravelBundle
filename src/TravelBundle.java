@@ -1,9 +1,9 @@
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.io.Serializable;
-
 import accommodation.Accommodation;
 import accommodation.Pricable;
+
+import java.time.LocalDate;
+// import java.time.format.DateTimeFormatter;
+import java.io.Serializable;
 
 public class TravelBundle implements Pricable, Serializable {
 

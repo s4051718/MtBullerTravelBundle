@@ -4,7 +4,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class ResortGUI extends JFrame {
-
     private MtBullerResort resort;
     private JTabbedPane tabbedPane;
 

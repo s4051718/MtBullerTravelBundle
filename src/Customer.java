@@ -1,9 +1,7 @@
 import java.io.Serializable;
 
 public class Customer implements Serializable {
-
     private SkiingLevel level;
-
     private String name;
     private int id;
 
